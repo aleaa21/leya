@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS Online - Seminar Profesi HIMASTA UNMUL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .crossword-board {
+            display: grid;
+            grid-template-columns: repeat(10, minmax(0, 1fr));
+            gap: 2px;
+            background-color: #334155;
+            border: 3px solid #1e293b;
+            padding: 4px;
+            border-radius: 8px;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        .cell {
+            aspect-ratio: 1;
+            position: relative;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 2px;
+        }
+        .cell.black {
+            background-color: #0f172a;
+        }
+        .cell input {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f172a;
+            background: transparent;
+            border: none;
+            outline: none;
+            text-transform: uppercase;
+            caret-color: #0d9488;
+        }
+        .cell input:focus {
+            background-color: #ccfbf1;
+        }
+        .cell-number {
+            position: absolute;
+            top: 1px;
+            left: 2px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #64748b;
+            pointer-events: none;
+            line-height: 1;
+        }
+        .cell.correct {
+            background-color: #dcfce7 !important;
+        }
+        .cell.correct input {
+            color: #15803d;
+        }
+        .cell.incorrect {
+            background-color: #fee2e2 !important;
+        }
+        .cell.incorrect input {
+            color: #b91c1c;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 pb-12">
+    <!-- Header -->
+    <header class="bg-teal-700 text-white py-6 shadow-md mb-8">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <span class="inline-block px-3 py-1 bg-teal-800 text-teal-200 rounded-full text-xs font-semibold uppercase tracking-wider mb-2">HIMASTA UNMUL</span>
+            <h1 class="text-2xl md:text-3xl font-bold">Teka-Teki Silang Online</h1>
+            <p class="text-teal-100 text-sm mt-1">Seminar Profesi: Statistika & Data Science</p>
+        </div>
+    </header>
+
+    <div class="max-w-5xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Papan TTS -->
+        <div class="lg:col-span-6 flex flex-col items-center">
+            <div class="w-full bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-4">
+                <div id="board" class="crossword-board"></div>
+            </div>
+
+            <!-- Tombol Aksi -->
+            <div class="flex flex-wrap gap-3 justify-center w-full">
+                <button onclick="checkAnswers()" class="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg shadow transition text-sm flex items-center gap-2">
+                    ✓ Cek Jawaban
+                </button>
+                <button onclick="revealHint()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg shadow transition text-sm flex items-center gap-2">
+                    💡 Bantuan (Hint)
+                </button>
+                <button onclick="resetBoard()" class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium rounded-lg transition text-sm">
+                    🔄 Reset
+                </button>
+            </div>
+            
+            <div id="status-message" class="mt-4 text-center font-medium text-sm"></div>
+        </div>
+
+        <!-- Daftar Pertanyaan -->
+        <div class="lg:col-span-6 grid grid-cols-1 md:grid-cols-2 gap-4 h-fit">
+            <!-- Mendatar -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <h2 class="text-lg font-bold text-teal-800 border-b pb-2 mb-3 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-teal-600 inline-block"></span>
+                    Mendatar
+                </h2>
+                <ul id="across-clues" class="space-y-3 text-sm text-slate-600"></ul>
+            </div>
+
+            <!-- Menurun -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <h2 class="text-lg font-bold text-teal-800 border-b pb-2 mb-3 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                    Menurun
+                </h2>
+                <ul id="down-clues" class="space-y-3 text-sm text-slate-600"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GRID_SIZE = 10;
+
+        // Data 10 Soal Seimbang
+        const words = [
+            // Mendatar
+            { number: 1, word: "STARS", direction: "across", row: 0, col: 0, clue: "Akronim tema seminar profesi di HIMASTA UNMUL." },
+            { number: 4, word: "PYTHON", direction: "across", row: 2, col: 4, clue: "Bahasa pemrograman utama statistikawan / data professional." },
+            { number: 6, word: "WISDOM", direction: "across", row: 4, col: 0, clue: "Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW." },
+            { number: 7, word: "ANALYSIS", direction: "across", row: 7, col: 1, clue: "Tahapan mengolah data untuk menemukan wawasan/pola." },
+            { number: 9, word: "EXCEL", direction: "across", row: 9, col: 5, clue: "Software spreadsheet mendasar untuk pengolahan data." },
+
+            // Menurun
+            { number: 2, word: "JUDGEMENT", direction: "down", row: 0, col: 2, clue: "Pertimbangan kritis manusia yang tidak dapat digantikan AI." },
+            { number: 3, word: "ETHICS", direction: "down", row: 2, col: 9, clue: "Prinsip moral & integritas data agar terhindar dari bias." },
+            { number: 5, word: "DATA", direction: "down", row: 4, col: 5, clue: "Bahan mentah berupa angka/fakta di balik pertanyaan bisnis." },
+            { number: 8, word: "PORTOFOLIO", direction: "down", row: 1, col: 7, clue: "Kumpulan rekam jejak karya/projek nyata sejak kuliah." },
+            { number: 10, word: "SQL", direction: "down", row: 7, col: 6, clue: "Bahasa kueri standar untuk mengelola basis data." }
+        ];
+
+        let gridData = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null));
+
+        function initGrid() {
+            words.forEach(item => {
+                let r = item.row;
+                let c = item.col;
+                for (let i = 0; i < item.word.length; i++) {
+                    if (!gridData[r][c]) {
+                        gridData[r][c] = {
+                            char: item.word[i],
+                            number: (i === 0) ? item.number : null
+                        };
+                    } else if (i === 0) {
+                        gridData[r][c].number = item.number;
+                    }
+
+                    if (item.direction === "across") c++;
+                    else r++;
+                }
+            });
+
+            const boardEl = document.getElementById("board");
+            boardEl.innerHTML = "";
+
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    const cellData = gridData[r][c];
+                    const cellEl = document.createElement("div");
+                    cellEl.className = "cell " + (cellData ? "" : "black");
+
+                    if (cellData) {
+                        cellEl.id = `cell-${r}-${c}`;
+                        if (cellData.number) {
+                            const numEl = document.createElement("span");
+                            numEl.className = "cell-number";
+                            numEl.innerText = cellData.number;
+                            cellEl.appendChild(numEl);
+                        }
+
+                        const inputEl = document.createElement("input");
+                        inputEl.maxLength = 1;
+                        inputEl.dataset.row = r;
+                        inputEl.dataset.col = c;
+                        
+                        inputEl.addEventListener("input", (e) => {
+                            e.target.value = e.target.value.toUpperCase();
+                            if (e.target.value) focusNextCell(r, c);
+                        });
+
+                        inputEl.addEventListener("keydown", (e) => {
+                            if (e.key === "Backspace" && !e.target.value) focusPrevCell(r, c);
+                        });
+
+                        cellEl.appendChild(inputEl);
+                    }
+
+                    boardEl.appendChild(cellEl);
+                }
+            }
+
+            // Render Clues
+            const acrossEl = document.getElementById("across-clues");
+            const downEl = document.getElementById("down-clues");
+            acrossEl.innerHTML = "";
+            downEl.innerHTML = "";
+
+            words.sort((a,b) => a.number - b.number).forEach(item => {
+                const li = document.createElement("li");
+                li.className = "cursor-pointer hover:text-teal-600 transition";
+                li.innerHTML = `<strong class="text-teal-700">${item.number}.</strong> ${item.clue} <span class="text-xs text-slate-400">(${item.word.length} hrft)</span>`;
+                li.onclick = () => {
+                    const input = document.querySelector(`input[data-row="${item.row}"][data-col="${item.col}"]`);
+                    if (input) input.focus();
+                };
+
+                if (item.direction === "across") acrossEl.appendChild(li);
+                else downEl.appendChild(li);
+            });
+        }
+
+        function focusNextCell(r, c) {
+            const nextInput = document.querySelector(`input[data-row="${r}"][data-col="${c + 1}"]`) || 
+                              document.querySelector(`input[data-row="${r + 1}"][data-col="${c}"]`);
+            if (nextInput) nextInput.focus();
+        }
+
+        function focusPrevCell(r, c) {
+            const prevInput = document.querySelector(`input[data-row="${r}"][data-col="${c - 1}"]`) || 
+                              document.querySelector(`input[data-row="${r - 1}"][data-col="${c}"]`);
+            if (prevInput) prevInput.focus();
+        }
+
+        function checkAnswers() {
+            let correctCount = 0;
+            let totalCells = 0;
+
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    if (gridData[r][c]) {
+                        totalCells++;
+                        const cellEl = document.getElementById(`cell-${r}-${c}`);
+                        const inputEl = cellEl.querySelector("input");
+                        const val = inputEl.value.trim().toUpperCase();
+
+                        cellEl.classList.remove("correct", "incorrect");
+
+                        if (val === gridData[r][c].char) {
+                            cellEl.classList.add("correct");
+                            correctCount++;
+                        } else if (val !== "") {
+                            cellEl.classList.add("incorrect");
+                        }
+                    }
+                }
+            }
+
+            const msgEl = document.getElementById("status-message");
+            if (correctCount === totalCells) {
+                msgEl.className = "mt-4 text-center font-bold text-green-600 text-base";
+                msgEl.innerText = "🎉 Selamat! Semua jawaban kamu BENAR 100%!";
+            } else {
+                msgEl.className = "mt-4 text-center font-medium text-amber-600 text-sm";
+                msgEl.innerText = `Kamu menjawab ${correctCount} dari ${totalCells} huruf dengan benar.`;
+            }
+        }
+
+        function revealHint() {
+            const emptyInputs = [];
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    if (gridData[r][c]) {
+                        const cellEl = document.getElementById(`cell-${r}-${c}`);
+                        const inputEl = cellEl.querySelector("input");
+                        if (inputEl.value.toUpperCase() !== gridData[r][c].char) {
+                            emptyInputs.push({ cellEl, inputEl, char: gridData[r][c].char });
+                        }
+                    }
+                }
+            }
+
+            if (emptyInputs.length > 0) {
+                const pick = emptyInputs[Math.floor(Math.random() * emptyInputs.length)];
+                pick.inputEl.value = pick.char;
+                pick.cellEl.classList.remove("incorrect");
+                pick.cellEl.classList.add("correct");
+            }
+        }
+
+        function resetBoard() {
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    if (gridData[r][c]) {
+                        const cellEl = document.getElementById(`cell-${r}-${c}`);
+                        cellEl.classList.remove("correct", "incorrect");
+                        cellEl.querySelector("input").value = "";
+                    }
+                }
+            }
+            document.getElementById("status-message").innerText = "";
+        }
+
+        window.onload = initGrid;
+    </script>
+</body>
+</html>
