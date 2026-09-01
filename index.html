@@ -5,23 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TTS Seminar Profesi HIMASTA UNMUL</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
             padding: 20px;
             color: #333;
         }
 
-        h1 {
+        header {
             text-align: center;
-            margin-bottom: 5px;
+            margin-bottom: 20px;
         }
 
-        p.subtitle {
-            text-align: center;
+        header h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        header p {
             color: #666;
-            margin-bottom: 25px;
+            font-size: 14px;
+            margin-top: 4px;
             font-weight: bold;
         }
 
@@ -40,29 +50,30 @@
             align-items: center;
         }
 
-        /* Grid TTS 10x10 */
-        .tts-board {
-            display: grid;
-            grid-template-columns: repeat(10, 36px);
-            grid-template-rows: repeat(10, 36px);
-            gap: 1px;
-            background-color: #222;
-            border: 3px solid #222;
+        /* Tabel Grid TTS */
+        .tts-table {
+            border-collapse: collapse;
+            background-color: #000;
+            border: 3px solid #000;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
-        .cell {
+        .tts-table td {
             width: 36px;
             height: 36px;
+            padding: 0;
+            margin: 0;
             position: relative;
             background-color: #fff;
+            text-align: center;
+            vertical-align: middle;
         }
 
-        .cell.black {
-            background-color: #222;
+        .tts-table td.black {
+            background-color: #000;
         }
 
-        .cell input {
+        .tts-table input {
             width: 100%;
             height: 100%;
             border: none;
@@ -72,10 +83,9 @@
             font-weight: bold;
             text-transform: uppercase;
             background: transparent;
-            box-sizing: border-box;
         }
 
-        .cell input:focus {
+        .tts-table input:focus {
             background-color: #e0f2fe;
         }
 
@@ -135,14 +145,15 @@
             font-size: 16px;
         }
 
-        ol {
-            padding-left: 20px;
-            font-size: 13px;
-            line-height: 1.5;
+        ul {
+            list-style: none;
+            padding: 0;
         }
 
         li {
-            margin-bottom: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 10px;
         }
 
         #result-msg {
@@ -154,13 +165,17 @@
 </head>
 <body>
 
-    <h1>TEKA TEKI SILANG SEMINAR PROFESI</h1>
-    <p class="subtitle">HIMASTA UNMUL</p>
+    <header>
+        <h1>TEKA TEKI SILANG SEMINAR PROFESI</h1>
+        <p>HIMASTA UNMUL</p>
+    </header>
 
     <div class="main-container">
         <!-- Papan TTS -->
         <div class="board-area">
-            <div id="board" class="tts-board"></div>
+            <table class="tts-table">
+                <tbody id="board-body"></tbody>
+            </table>
             
             <div class="controls">
                 <button class="btn-check" onclick="cekJawaban()">Cek Jawaban</button>
@@ -170,28 +185,28 @@
             <div id="result-msg"></div>
         </div>
 
-        <!-- Pertanyaan -->
+        <!-- Pertanyaan (Kunci Jawaban Sudah Dihapus) -->
         <div class="clues-area">
             <div class="clues-section">
                 <h3>MENDATAR</h3>
-                <ol>
-                    <li value="1"><strong>STARS:</strong> Akronim dari tema seminar profesi di HIMASTA UNMUL.</li>
-                    <li value="4"><strong>PYTHON:</strong> Bahasa pemrograman utama data professional.</li>
-                    <li value="6"><strong>WISDOM:</strong> Tingkat keputusan tertinggi dalam kerangka DIKW.</li>
-                    <li value="7"><strong>ANALYSIS:</strong> Tahapan mengolah data untuk menemukan wawasan.</li>
-                    <li value="9"><strong>EXCEL:</strong> Aplikasi spreadsheet mendasar untuk data preparation.</li>
-                </ol>
+                <ul>
+                    <li><strong>1.</strong> Akronim dari tema seminar profesi di HIMASTA UNMUL (Statistics Towards Achievement and Responsible Success).</li>
+                    <li><strong>4.</strong> Salah satu bahasa pemrograman utama yang paling sering digunakan oleh statistikawan dan data professional.</li>
+                    <li><strong>6.</strong> Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW (What should we do?).</li>
+                    <li><strong>7.</strong> Tahapan atau proses mengolah data untuk menemukan wawasan (insight), hubungan, atau pola.</li>
+                    <li><strong>9.</strong> Aplikasi spreadsheet mendasar yang digunakan untuk pembersihan data (data preparation) dan tabel analisis.</li>
+                </ul>
             </div>
 
             <div class="clues-section">
                 <h3>MENURUN</h3>
-                <ol>
-                    <li value="2"><strong>JUDGEMENT:</strong> Pertimbangan kritis manusia yang tidak digantikan AI.</li>
-                    <li value="3"><strong>ETHICS:</strong> Prinsip moral dan objektivitas pengolahan data.</li>
-                    <li value="5"><strong>DATA:</strong> Bahan mentah berupa angka atau fakta.</li>
-                    <li value="8"><strong>PORTOFOLIO:</strong> Rekam jejak hasil karya mahasiswa.</li>
-                    <li value="10"><strong>SQL:</strong> Bahasa kueri standar untuk mengelola database.</li>
-                </ol>
+                <ul>
+                    <li><strong>2.</strong> Pertimbangan kritis dan pemahaman konteks manusia yang tidak dapat digantikan oleh kecerdasan buatan (AI) secara utuh.</li>
+                    <li><strong>3.</strong> Prinsip moral, integritas, dan objektivitas dalam pengolahan data agar terhindar dari bias.</li>
+                    <li><strong>5.</strong> Bahan mentah berupa angka atau fakta yang berada di balik setiap pertanyaan bisnis maupun kebijakan.</li>
+                    <li><strong>8.</strong> Kumpulan rekam jejak hasil karya atau projek nyata yang perlu dibangun mahasiswa sejak bangku kuliah (Start Early).</li>
+                    <li><strong>10.</strong> Bahasa kueri standar yang digunakan untuk mengelola dan mengekstrak data dari sistem basis data (database).</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -231,20 +246,21 @@
             }
         });
 
-        // Gambar Grid ke HTML
-        const boardEl = document.getElementById("board");
+        // Gambar Grid menggunakan Table HTML
+        const tbody = document.getElementById("board-body");
         for (let r = 0; r < 10; r++) {
+            const tr = document.createElement("tr");
             for (let c = 0; c < 10; c++) {
-                const cellDiv = document.createElement("div");
+                const td = document.createElement("td");
                 const cellData = grid[r][c];
 
                 if (cellData) {
-                    cellDiv.className = "cell";
+                    td.id = `cell-${r}-${c}`;
                     if (cellData.num) {
                         const numSpan = document.createElement("span");
                         numSpan.className = "cell-num";
                         numSpan.innerText = cellData.num;
-                        cellDiv.appendChild(numSpan);
+                        td.appendChild(numSpan);
                     }
 
                     const input = document.createElement("input");
@@ -254,12 +270,13 @@
                     input.oninput = function() {
                         this.value = this.value.toUpperCase();
                     };
-                    cellDiv.appendChild(input);
+                    td.appendChild(input);
                 } else {
-                    cellDiv.className = "cell black";
+                    td.className = "black";
                 }
-                boardEl.appendChild(cellDiv);
+                tr.appendChild(td);
             }
+            tbody.appendChild(tr);
         }
 
         function cekJawaban() {
@@ -309,7 +326,7 @@
         }
 
         function resetSemua() {
-            document.querySelectorAll(".cell input").forEach(input => {
+            document.querySelectorAll("td input").forEach(input => {
                 input.value = "";
                 input.style.backgroundColor = "transparent";
             });
