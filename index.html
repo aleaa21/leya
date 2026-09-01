@@ -28,7 +28,7 @@
 
         .tts {
             display: grid;
-            grid-template-columns: repeat(12, 35px);
+            grid-template-columns: repeat(12, 40px);
             gap: 2px;
             justify-content: center;
             margin: 30px 0;
@@ -36,16 +36,16 @@
         }
 
         .cell {
-            width: 35px;
-            height: 35px;
-            border: 1px solid #222;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #222;
             position: relative;
             background: white;
         }
 
         .black {
             background: #222;
-            border: 1px solid #222;
+            border: 2px solid #222;
         }
 
         .cell input {
@@ -53,7 +53,7 @@
             height: 100%;
             border: none;
             text-align: center;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             text-transform: uppercase;
             outline: none;
@@ -63,9 +63,9 @@
 
         .number {
             position: absolute;
-            top: 1px;
-            left: 2px;
-            font-size: 9px;
+            top: 2px;
+            left: 3px;
+            font-size: 10px;
             z-index: 2;
             pointer-events: none;
             font-weight: bold;
@@ -207,49 +207,60 @@
 </div>
 
 <script>
-// Ukuran grid: 11 baris x 12 kolom
 const rows = 11;
 const cols = 12;
 
-// KOORDINAT YANG SANGAT AKURAT berdasarkan gambar:
-// Baris 0: [1]S T A R S [2]S
-// Baris 2: [4]P O R T O F O L I O
-// Baris 5: [5]A N A L Y S I S
-// Baris 5: [6]E T H I C S (vertikal dari kolom 8)
-// Baris 7: [7]J U D G E M E N T
-// Baris 9: [8]E X C E L
-// Baris 5: [9]D A T A (vertikal dari kolom 10)
-// Baris 8: [10]S Q L (vertikal dari kolom 11)
+// KOORDINAT YANG SANGAT AKURAT - semua huruf yang sama digabung di kotak yang sama
+// Berdasarkan gambar:
+// Baris 0: [1] S T A R S [2] S
+// Baris 2: [4] P O R T O F O L I O
+// Baris 5: [5] A N A L Y S I S
+// Baris 5: [6] E T H I C S (vertikal dari kolom 8)
+// Baris 7: [7] J U D G E M E N T
+// Baris 9: [8] E X C E L
+// Baris 5: [9] D A T A (vertikal dari kolom 10)
+// Baris 8: [10] S Q L (vertikal dari kolom 11)
+
+// CATATAN: 
+// - STARS: S di kolom 1, T di 2, A di 3, R di 4, S di 5
+// - WISDOM: S di kolom 6 (berbeda dengan S di kolom 5)
+// - PYTHON: mulai di (2,4) ke bawah, berpotongan dengan PORTOFOLIO di P
+// - PORTOFOLIO: mulai di (2,1) ke kanan
+// - ANALYSIS: mulai di (5,1) ke kanan
+// - ETHICS: mulai di (5,8) ke bawah
+// - JUDGEMENT: mulai di (7,1) ke kanan
+// - EXCEL: mulai di (9,1) ke kanan
+// - DATA: mulai di (5,10) ke bawah
+// - SQL: mulai di (8,11) ke bawah
 
 const words = {
-    1: { answer: "STARS", row: 0, col: 1, direction: "across" },      // S T A R S
-    2: { answer: "WISDOM", row: 0, col: 6, direction: "down" },       // W I S D O M (vertikal)
-    3: { answer: "PYTHON", row: 2, col: 4, direction: "down" },       // P Y T H O N (vertikal, berpotongan dengan PORTOFOLIO di P)
-    4: { answer: "PORTOFOLIO", row: 2, col: 1, direction: "across" }, // P O R T O F O L I O
-    5: { answer: "ANALYSIS", row: 5, col: 1, direction: "across" },   // A N A L Y S I S
-    6: { answer: "ETHICS", row: 5, col: 8, direction: "down" },       // E T H I C S (vertikal)
-    7: { answer: "JUDGEMENT", row: 7, col: 1, direction: "across" },  // J U D G E M E N T
-    8: { answer: "EXCEL", row: 9, col: 1, direction: "across" },      // E X C E L
-    9: { answer: "DATA", row: 5, col: 10, direction: "down" },        // D A T A (vertikal)
-    10: { answer: "SQL", row: 8, col: 11, direction: "down" }         // S Q L (vertikal)
+    1: { answer: "STARS", row: 0, col: 1, direction: "across" },
+    2: { answer: "WISDOM", row: 0, col: 6, direction: "down" },
+    3: { answer: "PYTHON", row: 2, col: 4, direction: "down" },
+    4: { answer: "PORTOFOLIO", row: 2, col: 1, direction: "across" },
+    5: { answer: "ANALYSIS", row: 5, col: 1, direction: "across" },
+    6: { answer: "ETHICS", row: 5, col: 8, direction: "down" },
+    7: { answer: "JUDGEMENT", row: 7, col: 1, direction: "across" },
+    8: { answer: "EXCEL", row: 9, col: 1, direction: "across" },
+    9: { answer: "DATA", row: 5, col: 10, direction: "down" },
+    10: { answer: "SQL", row: 8, col: 11, direction: "down" }
 };
 
 // Buat grid kosong
 const grid = Array.from({length: rows}, () => Array(cols).fill(null));
 
-// Fungsi untuk mengisi sel
+// Fungsi untuk mengisi sel - huruf yang sama di posisi sama akan digabung
 function fillCell(r, c, letter, number, isFirst) {
     if (r < 0 || r >= rows || c < 0 || c >= cols) return;
     
     if (!grid[r][c]) {
         grid[r][c] = { letter: letter, number: null };
-    } else if (!grid[r][c].letter) {
-        grid[r][c].letter = letter;
     } else if (grid[r][c].letter !== letter) {
-        // Jika ada konflik, biarkan huruf yang sudah ada
-        console.log(`Konflik di (${r},${c}): ${grid[r][c].letter} vs ${letter}`);
+        // Jika huruf berbeda di posisi yang sama, ini error
+        console.error(`ERROR: Konflik di (${r},${c}): ${grid[r][c].letter} vs ${letter}`);
         return;
     }
+    // Jika huruf sama, lanjutkan (digabung)
     
     if (isFirst) {
         grid[r][c].number = number;
@@ -271,6 +282,20 @@ for (const [number, word] of Object.entries(words)) {
             r++;
         }
     }
+}
+
+// Cetak grid untuk debugging
+console.log("=== GRID TTS ===");
+for (let r = 0; r < rows; r++) {
+    let row = "";
+    for (let c = 0; c < cols; c++) {
+        if (grid[r][c] && grid[r][c].letter) {
+            row += grid[r][c].letter + " ";
+        } else {
+            row += ". ";
+        }
+    }
+    console.log(row);
 }
 
 // Buat tampilan TTS
