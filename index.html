@@ -67,6 +67,8 @@
             font-size: 9px;
             z-index: 2;
             pointer-events: none;
+            font-weight: bold;
+            color: #222;
         }
 
         .questions {
@@ -192,34 +194,68 @@
 const rows = 15;
 const cols = 20;
 
-const grid = Array.from({length: rows}, () => Array(cols).fill(null));
+// Jawaban yang benar:
+// 1. STARS (mendatar, mulai di baris 1, kolom 4)
+// 2. WISDOM (menurun, mulai di baris 0, kolom 7)
+// 3. PYTHON (menurun, mulai di baris 3, kolom 4) - berpotongan dengan PORTOFOLIO di huruf P
+// 4. PORTOFOLIO (mendatar, mulai di baris 3, kolom 4) 
+// 5. ANALYSIS (mendatar, mulai di baris 6, kolom 3)
+// 6. ETHICS (menurun, mulai di baris 6, kolom 8) - berpotongan dengan ANALYSIS di huruf S
+// 7. JUDGEMENT (mendatar, mulai di baris 8, kolom 3)
+// 8. EXCEL (mendatar, mulai di baris 10, kolom 6)
+// 9. DATA (menurun, mulai di baris 6, kolom 10) - berpotongan dengan ANALYSIS di huruf A
+// 10. SQL (menurun, mulai di baris 9, kolom 11)
 
-// Koordinat fix yang akurat agar antar kata saling berpotongan dengan benar
 const words = {
     1: { answer: "STARS", row: 1, col: 4, direction: "across" },
     2: { answer: "WISDOM", row: 0, col: 7, direction: "down" },
-    3: { answer: "PYTHON", row: 3, col: 3, direction: "down" },
-    4: { answer: "PORTOFOLIO", row: 3, col: 3, direction: "across" },
+    3: { answer: "PYTHON", row: 3, col: 4, direction: "down" },
+    4: { answer: "PORTOFOLIO", row: 3, col: 4, direction: "across" },
     5: { answer: "ANALYSIS", row: 6, col: 3, direction: "across" },
-    6: { answer: "ETHICS", row: 3, col: 8, direction: "down" },
+    6: { answer: "ETHICS", row: 6, col: 8, direction: "down" },
     7: { answer: "JUDGEMENT", row: 8, col: 3, direction: "across" },
     8: { answer: "EXCEL", row: 10, col: 6, direction: "across" },
     9: { answer: "DATA", row: 6, col: 10, direction: "down" },
-    10: { answer: "SQL", row: 7, col: 13, direction: "down" }
+    10: { answer: "SQL", row: 9, col: 11, direction: "down" }
 };
+
+// Inisialisasi grid kosong
+const grid = Array.from({length: rows}, () => Array(cols).fill(null));
+
+// Fungsi untuk menandai sel yang terisi
+function markCell(r, c, letter, number, pos) {
+    if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+    
+    if (!grid[r][c]) {
+        grid[r][c] = { letter, number: null };
+    }
+    // Jika ada nomor, tambahkan (hanya di posisi pertama)
+    if (pos === 0) {
+        grid[r][c].number = number;
+    }
+    // Update huruf jika masih kosong atau sama
+    if (!grid[r][c].letter) {
+        grid[r][c].letter = letter;
+    }
+}
 
 // Masukkan kata ke grid
 for (const [number, word] of Object.entries(words)) {
     let r = word.row;
     let c = word.col;
+    const answer = word.answer.toUpperCase();
 
-    for (let i = 0; i < word.answer.length; i++) {
-        if (r >= 0 && r < rows && c >= 0 && c < cols) {
-            grid[r][c] = {
-                letter: word.answer[i],
-                number: i === 0 ? number : grid[r][c]?.number || null
-            };
+    for (let i = 0; i < answer.length; i++) {
+        const pos = i;
+        const currentR = r;
+        const currentC = c;
+        
+        // Cek apakah sel sudah terisi dengan huruf berbeda (konflik)
+        if (grid[currentR] && grid[currentR][currentC] && grid[currentR][currentC].letter && grid[currentR][currentC].letter !== answer[i]) {
+            console.warn(`Konflik di (${currentR},${currentC}): ${grid[currentR][currentC].letter} vs ${answer[i]}`);
         }
+        
+        markCell(currentR, currentC, answer[i], parseInt(number), pos);
 
         if (word.direction === "across") {
             c++;
@@ -236,7 +272,7 @@ grid.forEach((row, r) => {
     row.forEach((cell, c) => {
         const box = document.createElement("div");
 
-        if (cell) {
+        if (cell && cell.letter) {
             box.className = "cell";
 
             if (cell.number) {
@@ -265,16 +301,35 @@ function cekJawaban() {
     let total = inputs.length;
 
     inputs.forEach(input => {
-        if (input.value.toUpperCase() === input.dataset.answer) {
+        const userAnswer = input.value.toUpperCase().trim();
+        const correctAnswer = input.dataset.answer.toUpperCase();
+        
+        if (userAnswer === correctAnswer) {
             benar++;
             input.style.background = "#d4edda";
+            input.style.color = "#155724";
+        } else if (userAnswer === "") {
+            input.style.background = "#fff3cd";
+            input.style.color = "#856404";
         } else {
             input.style.background = "#f8d7da";
+            input.style.color = "#721c24";
         }
     });
 
-    document.getElementById("hasil").innerHTML = `🎯 Benar: ${benar} dari ${total} kotak`;
+    document.getElementById("hasil").innerHTML = `🎯 Benar: ${benar} dari ${total} kotak terisi`;
 }
+
+// Tambahkan event listener untuk enter key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        const activeElement = document.activeElement;
+        if (activeElement && activeElement.tagName === 'INPUT') {
+            e.preventDefault();
+            cekJawaban();
+        }
+    }
+});
 </script>
 
 </body>
