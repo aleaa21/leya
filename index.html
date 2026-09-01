@@ -2,375 +2,82 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TTS HIMASTA UNMUL</title>
-
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 30px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        .tts {
-            display: grid;
-            grid-template-columns: repeat(12, 40px);
-            gap: 2px;
-            justify-content: center;
-            margin: 30px 0;
-            overflow-x: auto;
-        }
-
-        .cell {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #222;
-            position: relative;
-            background: white;
-        }
-
-        .black {
-            background: #222;
-            border: 2px solid #222;
-        }
-
-        .cell input {
-            width: 100%;
-            height: 100%;
-            border: none;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            text-transform: uppercase;
-            outline: none;
-            background: transparent;
-            padding: 0;
-        }
-
-        .number {
-            position: absolute;
-            top: 2px;
-            left: 3px;
-            font-size: 10px;
-            z-index: 2;
-            pointer-events: none;
-            font-weight: bold;
-            color: #222;
-        }
-
-        .questions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        h2 {
-            border-bottom: 2px solid #222;
-            padding-bottom: 5px;
-        }
-
-        li {
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        button {
-            display: block;
-            margin: 25px auto;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            background: #222;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #444;
-        }
-
-        #hasil {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-
-        .correct {
-            background: #d4edda !important;
-            color: #155724 !important;
-        }
-
-        .wrong {
-            background: #f8d7da !important;
-            color: #721c24 !important;
-        }
-
-        .empty {
-            background: #fff3cd !important;
-            color: #856404 !important;
-        }
-
-        @media(max-width: 800px) {
-            .questions {
-                grid-template-columns: 1fr;
-            }
-
-            .tts {
-                transform: scale(0.7);
-                transform-origin: top center;
-                margin-bottom: -100px;
-            }
-        }
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
+        h2 { color: #2c3e50; }
+        .grid-container { display: inline-block; border: 2px solid #333; background-color: #fff; }
+        .grid-row { display: flex; }
+        .cell { width: 40px; height: 40px; border: 1px solid #999; display: flex; align-items: center; justify-content: center; position: relative; font-size: 20px; font-weight: bold; }
+        .black { background-color: #000; }
+        .white { background-color: #fff; }
+        .number { position: absolute; top: 2px; left: 3px; font-size: 10px; font-weight: normal; color: #333; }
+        .highlight { background-color: #ffff00; } /* Untuk menunjukkan titik potong S */
     </style>
 </head>
-
 <body>
-
-<div class="container">
-    <h1>🧩 TEKA-TEKI SILANG</h1>
-    <p style="text-align:center;"><b>HIMASTA UNMUL</b></p>
-
-    <div class="tts" id="tts"></div>
-
-    <button onclick="cekJawaban()">CEK JAWABAN</button>
-    <div id="hasil"></div>
-
-    <div class="questions">
-        <div>
-            <h2>MENDATAR (ACROSS)</h2>
-            <ol>
-                <li>
-                    <b>(5 Huruf)</b> Akronim dari tema seminar profesi di HIMASTA UNMUL 
-                    (<i>Statistics Towards Achievement and Responsible Success</i>).
-                </li>
-                <li value="4">
-                    <b>(10 Huruf)</b> Kumpulan rekam jejak hasil karya atau projek nyata yang perlu 
-                    dibangun mahasiswa sejak bangku kuliah (<i>Start Early</i>).
-                </li>
-                <li value="5">
-                    <b>(8 Huruf)</b> Tahapan atau proses mengolah data untuk menemukan wawasan 
-                    (<i>insight</i>), hubungan, atau pola.
-                </li>
-                <li value="7">
-                    <b>(9 Huruf)</b> Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW 
-                    (<i>What should we do?</i>).
-                </li>
-                <li value="8">
-                    <b>(5 Huruf)</b> Aplikasi <i>spreadsheet</i> mendasar yang digunakan untuk 
-                    pembersihan data dan tabel analisis.
-                </li>
-            </ol>
-        </div>
-
-        <div>
-            <h2>MENURUN (DOWN)</h2>
-            <ol>
-                <li value="2">
-                    <b>(6 Huruf)</b> Pertimbangan kritis dan pemahaman konteks manusia yang 
-                    tidak dapat digantikan oleh kecerdasan buatan (AI) secara utuh.
-                </li>
-                <li value="3">
-                    <b>(6 Huruf)</b> Salah satu bahasa pemrograman utama yang paling sering 
-                    digunakan oleh statistikawan dan <i>data professional</i>.
-                </li>
-                <li value="6">
-                    <b>(6 Huruf)</b> Prinsip moral, integritas, dan objektivitas dalam pengolahan 
-                    data agar terhindar dari bias.
-                </li>
-                <li value="9">
-                    <b>(4 Huruf)</b> Bahan mentah berupa angka atau fakta yang berada di balik 
-                    setiap pertanyaan bisnis maupun kebijakan.
-                </li>
-                <li value="10">
-                    <b>(3 Huruf)</b> Bahasa kueri standar yang digunakan untuk mengelola dan 
-                    mengekstrak data dari sistem basis data (<i>database</i>).
-                </li>
-            </ol>
-        </div>
+    <h2>TEKA-TEKI SILANG HIMASTA UNMUL</h2>
+    <div class="grid-container" id="crossword">
+        <!-- Grid akan dibuat oleh JavaScript di bawah -->
     </div>
-</div>
 
-<script>
-const rows = 11;
-const cols = 12;
+    <script>
+        const gridData = [
+            [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+            [0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+            [1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0],
+            [1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
+            [1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0]
+        ];
 
-// KOORDINAT YANG SANGAT AKURAT - semua huruf yang sama digabung di kotak yang sama
-// Berdasarkan gambar:
-// Baris 0: [1] S T A R S [2] S
-// Baris 2: [4] P O R T O F O L I O
-// Baris 5: [5] A N A L Y S I S
-// Baris 5: [6] E T H I C S (vertikal dari kolom 8)
-// Baris 7: [7] J U D G E M E N T
-// Baris 9: [8] E X C E L
-// Baris 5: [9] D A T A (vertikal dari kolom 10)
-// Baris 8: [10] S Q L (vertikal dari kolom 11)
+        // Kunci Jawaban untuk verifikasi visual
+        const answers = {
+            '0-0': 'S', '0-1': 'T', '0-2': 'A', '0-3': 'R', '0-4': 'S', // STARS
+            '1-0': 'W', '2-0': 'I', '3-0': 'S', '4-0': 'D', '5-0': 'O', '6-0': 'M', // WISDOM
+            '2-1': 'P', '2-2': 'O', '2-3': 'R', '2-4': 'T', '2-5': 'O', '2-6': 'F', '2-7': 'O', '2-8': 'L', '2-9': 'I', '2-10': 'O', // PORTOFOLIO
+            '2-4': 'T', '2-5': 'H', '2-6': 'Y', '2-7': 'T', '2-8': 'H', '2-9': 'O', '2-10': 'N', // PYTHON
+            '6-0': 'A', '6-1': 'N', '6-2': 'A', '6-3': 'L', '6-4': 'Y', '6-5': 'S', '6-6': 'I', '6-7': 'S', // ANALYSIS
+            '8-0': 'J', '8-1': 'U', '8-2': 'D', '8-3': 'G', '8-4': 'E', '8-5': 'M', '8-6': 'E', '8-7': 'N', '8-8': 'T', // JUDGEMENT
+            '10-0': 'E', '10-1': 'X', '10-2': 'C', '10-3': 'E', '10-4': 'L', // EXCEL
+            '3-1': 'E', '4-1': 'T', '5-1': 'H', '6-1': 'I', '7-1': 'C', '8-1': 'S', // ETHICS
+            '6-7': 'D', '7-7': 'A', '8-7': 'T', '9-7': 'A', // DATA
+            '8-8': 'S', '9-8': 'Q', '10-8': 'L' // SQL
+        };
 
-// CATATAN: 
-// - STARS: S di kolom 1, T di 2, A di 3, R di 4, S di 5
-// - WISDOM: S di kolom 6 (berbeda dengan S di kolom 5)
-// - PYTHON: mulai di (2,4) ke bawah, berpotongan dengan PORTOFOLIO di P
-// - PORTOFOLIO: mulai di (2,1) ke kanan
-// - ANALYSIS: mulai di (5,1) ke kanan
-// - ETHICS: mulai di (5,8) ke bawah
-// - JUDGEMENT: mulai di (7,1) ke kanan
-// - EXCEL: mulai di (9,1) ke kanan
-// - DATA: mulai di (5,10) ke bawah
-// - SQL: mulai di (8,11) ke bawah
-
-const words = {
-    1: { answer: "STARS", row: 0, col: 1, direction: "across" },
-    2: { answer: "WISDOM", row: 0, col: 6, direction: "down" },
-    3: { answer: "PYTHON", row: 2, col: 4, direction: "down" },
-    4: { answer: "PORTOFOLIO", row: 2, col: 1, direction: "across" },
-    5: { answer: "ANALYSIS", row: 5, col: 1, direction: "across" },
-    6: { answer: "ETHICS", row: 5, col: 8, direction: "down" },
-    7: { answer: "JUDGEMENT", row: 7, col: 1, direction: "across" },
-    8: { answer: "EXCEL", row: 9, col: 1, direction: "across" },
-    9: { answer: "DATA", row: 5, col: 10, direction: "down" },
-    10: { answer: "SQL", row: 8, col: 11, direction: "down" }
-};
-
-// Buat grid kosong
-const grid = Array.from({length: rows}, () => Array(cols).fill(null));
-
-// Fungsi untuk mengisi sel - huruf yang sama di posisi sama akan digabung
-function fillCell(r, c, letter, number, isFirst) {
-    if (r < 0 || r >= rows || c < 0 || c >= cols) return;
-    
-    if (!grid[r][c]) {
-        grid[r][c] = { letter: letter, number: null };
-    } else if (grid[r][c].letter !== letter) {
-        // Jika huruf berbeda di posisi yang sama, ini error
-        console.error(`ERROR: Konflik di (${r},${c}): ${grid[r][c].letter} vs ${letter}`);
-        return;
-    }
-    // Jika huruf sama, lanjutkan (digabung)
-    
-    if (isFirst) {
-        grid[r][c].number = number;
-    }
-}
-
-// Masukkan semua kata ke grid
-for (const [number, word] of Object.entries(words)) {
-    let r = word.row;
-    let c = word.col;
-    const answer = word.answer.toUpperCase();
-    
-    for (let i = 0; i < answer.length; i++) {
-        fillCell(r, c, answer[i], parseInt(number), i === 0);
+        const container = document.getElementById('crossword');
         
-        if (word.direction === "across") {
-            c++;
-        } else {
-            r++;
-        }
-    }
-}
-
-// Cetak grid untuk debugging
-console.log("=== GRID TTS ===");
-for (let r = 0; r < rows; r++) {
-    let row = "";
-    for (let c = 0; c < cols; c++) {
-        if (grid[r][c] && grid[r][c].letter) {
-            row += grid[r][c].letter + " ";
-        } else {
-            row += ". ";
-        }
-    }
-    console.log(row);
-}
-
-// Buat tampilan TTS
-const tts = document.getElementById("tts");
-
-for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-        const box = document.createElement("div");
-        const cell = grid[r][c];
-        
-        if (cell && cell.letter) {
-            box.className = "cell";
+        gridData.forEach((row, r) => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'grid-row';
             
-            if (cell.number) {
-                const number = document.createElement("span");
-                number.className = "number";
-                number.textContent = cell.number;
-                box.appendChild(number);
-            }
-            
-            const input = document.createElement("input");
-            input.maxLength = 1;
-            input.dataset.answer = cell.letter;
-            input.id = `cell-${r}-${c}`;
-            box.appendChild(input);
-        } else {
-            box.className = "cell black";
-        }
-        
-        tts.appendChild(box);
-    }
-}
-
-// Fungsi cek jawaban
-function cekJawaban() {
-    const inputs = document.querySelectorAll(".cell input");
-    let benar = 0;
-    let total = inputs.length;
-    
-    inputs.forEach(input => {
-        const userAnswer = input.value.toUpperCase().trim();
-        const correctAnswer = input.dataset.answer.toUpperCase();
-        
-        input.classList.remove('correct', 'wrong', 'empty');
-        
-        if (userAnswer === correctAnswer) {
-            benar++;
-            input.classList.add('correct');
-        } else if (userAnswer === "") {
-            input.classList.add('empty');
-        } else {
-            input.classList.add('wrong');
-        }
-    });
-    
-    const hasil = document.getElementById("hasil");
-    if (benar === total) {
-        hasil.innerHTML = `🎉 SELAMAT! Semua jawaban benar (${benar}/${total})! 🎉`;
-        hasil.style.color = "#28a745";
-    } else {
-        hasil.innerHTML = `🎯 Benar: ${benar} dari ${total} kotak`;
-        hasil.style.color = "#222";
-    }
-}
-
-// Shortcut Enter
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-        const active = document.activeElement;
-        if (active && active.tagName === 'INPUT' && active.closest('.cell')) {
-            cekJawaban();
-        }
-    }
-});
-</script>
-
+            row.forEach((cell, c) => {
+                const cellDiv = document.createElement('div');
+                cellDiv.className = 'cell';
+                
+                if (cell === 1) {
+                    cellDiv.classList.add('white');
+                    if (answers[`${r}-${c}`]) {
+                        cellDiv.innerText = answers[`${r}-${c}`];
+                    }
+                    
+                    // Highlight pada titik potong S (Baris 1 Kolom 1 dan Baris 3 Kolom 1)
+                    if ((r === 0 && c === 0) || (r === 2 && c === 0)) {
+                        cellDiv.classList.add('highlight');
+                    }
+                } else {
+                    cellDiv.classList.add('black');
+                }
+                
+                rowDiv.appendChild(cellDiv);
+            });
+            container.appendChild(rowDiv);
+        });
+    </script>
 </body>
 </html>
