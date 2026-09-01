@@ -110,15 +110,30 @@
             margin-top: 15px;
         }
 
+        .correct {
+            background: #d4edda !important;
+            color: #155724 !important;
+        }
+
+        .wrong {
+            background: #f8d7da !important;
+            color: #721c24 !important;
+        }
+
+        .empty {
+            background: #fff3cd !important;
+            color: #856404 !important;
+        }
+
         @media(max-width: 800px) {
             .questions {
                 grid-template-columns: 1fr;
             }
 
             .tts {
-                transform: scale(0.7);
+                transform: scale(0.6);
                 transform-origin: top center;
-                margin-bottom: -100px;
+                margin-bottom: -150px;
             }
         }
     </style>
@@ -191,72 +206,54 @@
 </div>
 
 <script>
-const rows = 15;
+const rows = 16;
 const cols = 20;
 
-// Jawaban yang benar:
-// 1. STARS (mendatar, mulai di baris 1, kolom 4)
-// 2. WISDOM (menurun, mulai di baris 0, kolom 7)
-// 3. PYTHON (menurun, mulai di baris 3, kolom 4) - berpotongan dengan PORTOFOLIO di huruf P
-// 4. PORTOFOLIO (mendatar, mulai di baris 3, kolom 4) 
-// 5. ANALYSIS (mendatar, mulai di baris 6, kolom 3)
-// 6. ETHICS (menurun, mulai di baris 6, kolom 8) - berpotongan dengan ANALYSIS di huruf S
-// 7. JUDGEMENT (mendatar, mulai di baris 8, kolom 3)
-// 8. EXCEL (mendatar, mulai di baris 10, kolom 6)
-// 9. DATA (menurun, mulai di baris 6, kolom 10) - berpotongan dengan ANALYSIS di huruf A
-// 10. SQL (menurun, mulai di baris 9, kolom 11)
-
+// Definisi kata dengan koordinat yang akurat (0-based index)
+// Berdasarkan gambar TTS
 const words = {
-    1: { answer: "STARS", row: 1, col: 4, direction: "across" },
-    2: { answer: "WISDOM", row: 0, col: 7, direction: "down" },
-    3: { answer: "PYTHON", row: 3, col: 4, direction: "down" },
-    4: { answer: "PORTOFOLIO", row: 3, col: 4, direction: "across" },
-    5: { answer: "ANALYSIS", row: 6, col: 3, direction: "across" },
-    6: { answer: "ETHICS", row: 6, col: 8, direction: "down" },
-    7: { answer: "JUDGEMENT", row: 8, col: 3, direction: "across" },
-    8: { answer: "EXCEL", row: 10, col: 6, direction: "across" },
-    9: { answer: "DATA", row: 6, col: 10, direction: "down" },
-    10: { answer: "SQL", row: 9, col: 11, direction: "down" }
+    1: { answer: "STARS", row: 0, col: 3, direction: "across" },      // baris 1, kolom 4
+    2: { answer: "WISDOM", row: 0, col: 7, direction: "down" },       // baris 1, kolom 8
+    3: { answer: "PYTHON", row: 2, col: 4, direction: "down" },       // baris 3, kolom 5
+    4: { answer: "PORTOFOLIO", row: 2, col: 4, direction: "across" }, // baris 3, kolom 5
+    5: { answer: "ANALYSIS", row: 5, col: 3, direction: "across" },   // baris 6, kolom 4
+    6: { answer: "ETHICS", row: 5, col: 8, direction: "down" },       // baris 6, kolom 9
+    7: { answer: "JUDGEMENT", row: 7, col: 3, direction: "across" },  // baris 8, kolom 4
+    8: { answer: "EXCEL", row: 9, col: 6, direction: "across" },      // baris 10, kolom 7
+    9: { answer: "DATA", row: 5, col: 10, direction: "down" },        // baris 6, kolom 11
+    10: { answer: "SQL", row: 8, col: 11, direction: "down" }         // baris 9, kolom 12
 };
 
-// Inisialisasi grid kosong
+// Buat grid kosong
 const grid = Array.from({length: rows}, () => Array(cols).fill(null));
 
-// Fungsi untuk menandai sel yang terisi
-function markCell(r, c, letter, number, pos) {
+// Fungsi untuk mengisi sel
+function fillCell(r, c, letter, number, isFirst) {
     if (r < 0 || r >= rows || c < 0 || c >= cols) return;
     
     if (!grid[r][c]) {
-        grid[r][c] = { letter, number: null };
-    }
-    // Jika ada nomor, tambahkan (hanya di posisi pertama)
-    if (pos === 0) {
-        grid[r][c].number = number;
-    }
-    // Update huruf jika masih kosong atau sama
-    if (!grid[r][c].letter) {
+        grid[r][c] = { letter: letter, number: null };
+    } else if (!grid[r][c].letter) {
         grid[r][c].letter = letter;
+    } else if (grid[r][c].letter !== letter) {
+        // Konflik - ini seharusnya tidak terjadi jika koordinat benar
+        console.warn(`Konflik di (${r},${c}): ${grid[r][c].letter} vs ${letter}`);
+    }
+    
+    if (isFirst) {
+        grid[r][c].number = number;
     }
 }
 
-// Masukkan kata ke grid
+// Masukkan semua kata ke grid
 for (const [number, word] of Object.entries(words)) {
     let r = word.row;
     let c = word.col;
     const answer = word.answer.toUpperCase();
-
+    
     for (let i = 0; i < answer.length; i++) {
-        const pos = i;
-        const currentR = r;
-        const currentC = c;
+        fillCell(r, c, answer[i], parseInt(number), i === 0);
         
-        // Cek apakah sel sudah terisi dengan huruf berbeda (konflik)
-        if (grid[currentR] && grid[currentR][currentC] && grid[currentR][currentC].letter && grid[currentR][currentC].letter !== answer[i]) {
-            console.warn(`Konflik di (${currentR},${currentC}): ${grid[currentR][currentC].letter} vs ${answer[i]}`);
-        }
-        
-        markCell(currentR, currentC, answer[i], parseInt(number), pos);
-
         if (word.direction === "across") {
             c++;
         } else {
@@ -268,64 +265,73 @@ for (const [number, word] of Object.entries(words)) {
 // Buat tampilan TTS
 const tts = document.getElementById("tts");
 
-grid.forEach((row, r) => {
-    row.forEach((cell, c) => {
+for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
         const box = document.createElement("div");
-
+        const cell = grid[r][c];
+        
         if (cell && cell.letter) {
             box.className = "cell";
-
+            
             if (cell.number) {
                 const number = document.createElement("span");
                 number.className = "number";
                 number.textContent = cell.number;
                 box.appendChild(number);
             }
-
+            
             const input = document.createElement("input");
             input.maxLength = 1;
             input.dataset.answer = cell.letter;
+            input.id = `cell-${r}-${c}`;
             box.appendChild(input);
         } else {
             box.className = "cell black";
         }
-
+        
         tts.appendChild(box);
-    });
-});
+    }
+}
 
-// Cek jawaban
+// Fungsi cek jawaban
 function cekJawaban() {
     const inputs = document.querySelectorAll(".cell input");
     let benar = 0;
-    let total = inputs.length;
-
+    let total = 0;
+    
     inputs.forEach(input => {
+        total++;
         const userAnswer = input.value.toUpperCase().trim();
         const correctAnswer = input.dataset.answer.toUpperCase();
         
+        // Hapus class sebelumnya
+        input.classList.remove('correct', 'wrong', 'empty');
+        
         if (userAnswer === correctAnswer) {
             benar++;
-            input.style.background = "#d4edda";
-            input.style.color = "#155724";
+            input.classList.add('correct');
         } else if (userAnswer === "") {
-            input.style.background = "#fff3cd";
-            input.style.color = "#856404";
+            input.classList.add('empty');
         } else {
-            input.style.background = "#f8d7da";
-            input.style.color = "#721c24";
+            input.classList.add('wrong');
         }
     });
-
-    document.getElementById("hasil").innerHTML = `🎯 Benar: ${benar} dari ${total} kotak terisi`;
+    
+    const hasil = document.getElementById("hasil");
+    if (benar === total) {
+        hasil.innerHTML = `🎉 SELAMAT! Semua jawaban benar (${benar}/${total})! 🎉`;
+        hasil.style.color = "#28a745";
+    } else {
+        hasil.innerHTML = `🎯 Benar: ${benar} dari ${total} kotak terisi`;
+        hasil.style.color = "#222";
+    }
 }
 
-// Tambahkan event listener untuk enter key
+// Tambahkan shortcut Enter
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
-        const activeElement = document.activeElement;
-        if (activeElement && activeElement.tagName === 'INPUT') {
-            e.preventDefault();
+        const active = document.activeElement;
+        if (active && active.tagName === 'INPUT' && active.closest('.cell')) {
             cekJawaban();
         }
     }
