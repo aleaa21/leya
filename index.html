@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Teka Teki Silang Seminar Profesi</title>
+    <title>Teka Teki Silang - Seminar Profesi</title>
 
     <style>
 
@@ -17,46 +17,51 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f5f5f5;
+            background: #f4f4f4;
             color: #222;
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: auto;
-            padding: 30px 20px 50px;
+            padding: 35px 20px 60px;
             text-align: center;
         }
 
         h1 {
-            margin-bottom: 5px;
+            margin: 0;
             font-size: 32px;
+            font-weight: 700;
         }
 
         .subtitle {
-            color: #666;
+            margin-top: 8px;
             margin-bottom: 30px;
+            color: #666;
         }
 
 
         /* =========================
-           TTS
+           CROSSWORD GRID
         ========================= */
 
+        .grid-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            padding: 15px 0 25px;
+        }
+
         #crossword {
+
             display: grid;
 
             grid-template-columns:
-                repeat(8, 55px);
+                repeat(12, 48px);
 
             grid-template-rows:
-                repeat(12, 55px);
+                repeat(13, 48px);
 
             gap: 2px;
-
-            justify-content: center;
-
-            margin: 30px auto;
 
             background: #111;
 
@@ -64,13 +69,16 @@
 
             width: max-content;
 
+            margin: auto;
+
             border-radius: 5px;
         }
 
 
         .cell {
-            width: 55px;
-            height: 55px;
+
+            width: 48px;
+            height: 48px;
 
             background: white;
 
@@ -79,11 +87,13 @@
 
 
         .black {
+
             background: #111;
         }
 
 
         .cell input {
+
             width: 100%;
             height: 100%;
 
@@ -94,32 +104,41 @@
 
             text-align: center;
 
-            font-size: 24px;
+            font-size: 21px;
 
             font-weight: bold;
 
             text-transform: uppercase;
+
+            padding-top: 5px;
+
         }
 
 
         .cell input:focus {
-            background: #e8f1ff;
+
+            background: #eaf3ff;
+
         }
 
 
         .number {
+
             position: absolute;
 
             top: 3px;
             left: 4px;
 
-            font-size: 12px;
+            font-size: 11px;
 
             font-weight: bold;
+
+            color: #111;
 
             z-index: 5;
 
             pointer-events: none;
+
         }
 
 
@@ -128,11 +147,14 @@
         ========================= */
 
         .buttons {
-            margin: 25px 0;
+
+            margin: 20px 0;
+
         }
 
 
         button {
+
             padding: 12px 25px;
 
             margin: 5px;
@@ -146,46 +168,64 @@
             font-size: 15px;
 
             font-weight: bold;
+
         }
 
 
         .check {
+
             background: #222;
+
             color: white;
+
         }
 
 
         .reset {
+
             background: #ddd;
+
             color: #222;
+
+        }
+
+
+        button:hover {
+
+            opacity: 0.85;
+
         }
 
 
         #result {
+
+            min-height: 25px;
+
             margin: 15px;
+
+            font-size: 16px;
 
             font-weight: bold;
 
-            font-size: 17px;
         }
 
 
         /* =========================
-           CLUES
+           PETUNJUK
         ========================= */
 
         .clues {
 
             display: grid;
 
-            grid-template-columns:
-                1fr 1fr;
+            grid-template-columns: 1fr 1fr;
 
             gap: 25px;
 
             margin-top: 30px;
 
             text-align: left;
+
         }
 
 
@@ -199,6 +239,7 @@
 
             box-shadow:
                 0 4px 12px rgba(0,0,0,0.08);
+
         }
 
 
@@ -206,9 +247,10 @@
 
             margin-top: 0;
 
+            padding-bottom: 10px;
+
             border-bottom: 1px solid #ddd;
 
-            padding-bottom: 10px;
         }
 
 
@@ -216,7 +258,8 @@
 
             line-height: 1.6;
 
-            margin: 12px 0;
+            margin: 13px 0;
+
         }
 
 
@@ -226,28 +269,18 @@
 
         @media (max-width: 700px) {
 
-            #crossword {
-
-                transform: scale(0.65);
-
-                transform-origin:
-                    top center;
-
-                margin-bottom: -170px;
-            }
-
-
             .clues {
 
-                grid-template-columns:
-                    1fr;
-            }
+                grid-template-columns: 1fr;
 
+            }
 
             h1 {
 
                 font-size: 25px;
+
             }
+
         }
 
     </style>
@@ -272,10 +305,14 @@
 
 
     <!-- =========================
-         GRID TTS
+         GRID
     ========================== -->
 
-    <div id="crossword"></div>
+    <div class="grid-wrapper">
+
+        <div id="crossword"></div>
+
+    </div>
 
 
     <!-- =========================
@@ -288,7 +325,7 @@
             class="check"
             onclick="checkAnswers()">
 
-            ✓ Cek Jawaban
+            ✓ CEK JAWABAN
 
         </button>
 
@@ -297,7 +334,7 @@
             class="reset"
             onclick="resetGame()">
 
-            ↻ Reset
+            ↻ RESET
 
         </button>
 
@@ -307,8 +344,9 @@
     <div id="result"></div>
 
 
+
     <!-- =========================
-         CLUES
+         PETUNJUK
     ========================== -->
 
     <div class="clues">
@@ -317,7 +355,7 @@
         <div class="clue-box">
 
             <h2>
-                📝 Petunjuk
+                📝 PETUNJUK
             </h2>
 
 
@@ -366,7 +404,7 @@
         <div class="clue-box">
 
             <h2>
-                📝 Petunjuk
+                📝 PETUNJUK
             </h2>
 
 
@@ -397,7 +435,7 @@
             <p>
                 <b>9.</b>
                 Bahan mentah berupa angka atau fakta
-                yang menjadi dasar setiap analisis.
+                yang menjadi dasar analisis.
             </p>
 
 
@@ -419,10 +457,9 @@
 <script>
 
 
-/* ==================================================
+/* =====================================================
    KUNCI JAWABAN
-   NOMOR SUDAH DISESUAIKAN DENGAN ANGKA DALAM KURUNG
-================================================== */
+===================================================== */
 
 const answers = {
 
@@ -450,46 +487,50 @@ const answers = {
 
 
 
-/* ==================================================
+/* =====================================================
    POSISI KATA
 
-   row = baris
-   col = kolom
+   H = Horizontal
+   V = Vertical
 
-   H = horizontal
-   V = vertical
-================================================== */
+   row dan col dimulai dari 0
+===================================================== */
 
 const positions = {
 
+    /* 1 = STARS */
     1: {
         row: 5,
-        col: 0,
+        col: 8,
         direction: "V"
     },
 
 
+    /* 2 = WISDOM */
     2: {
         row: 5,
-        col: 1,
-        direction: "V"
-    },
-
-
-    3: {
-        row: 6,
-        col: 4,
-        direction: "V"
-    },
-
-
-    4: {
-        row: 0,
         col: 6,
+        direction: "H"
+    },
+
+
+    /* 3 = PYTHON */
+    3: {
+        row: 10,
+        col: 4,
+        direction: "H"
+    },
+
+
+    /* 4 = PORTFOLIO */
+    4: {
+        row: 4,
+        col: 10,
         direction: "V"
     },
 
 
+    /* 5 = ANALYSIS */
     5: {
         row: 7,
         col: 0,
@@ -497,37 +538,42 @@ const positions = {
     },
 
 
+    /* 6 = JUDGEMENT */
     6: {
-        row: 0,
-        col: 1,
+        row: 3,
+        col: 9,
         direction: "V"
     },
 
 
+    /* 7 = ETHICS */
     7: {
         row: 2,
-        col: 5,
+        col: 7,
         direction: "V"
     },
 
 
+    /* 8 = EXCEL */
     8: {
-        row: 3,
-        col: 3,
-        direction: "V"
-    },
-
-
-    9: {
         row: 2,
-        col: 1,
+        col: 7,
         direction: "H"
     },
 
 
-    10: {
-        row: 7,
+    /* 9 = DATA */
+    9: {
+        row: 3,
         col: 5,
+        direction: "H"
+    },
+
+
+    /* 10 = SQL */
+    10: {
+        row: 0,
+        col: 11,
         direction: "V"
     }
 
@@ -535,14 +581,19 @@ const positions = {
 
 
 
-/* ==================================================
+/* =====================================================
    UKURAN GRID
-================================================== */
+===================================================== */
 
-const rows = 12;
+const rows = 13;
 
-const cols = 8;
+const cols = 12;
 
+
+
+/* =====================================================
+   MEMBUAT GRID HITAM
+===================================================== */
 
 const crossword =
     document.getElementById("crossword");
@@ -550,11 +601,6 @@ const crossword =
 
 let cells = [];
 
-
-
-/* ==================================================
-   MEMBUAT SEMUA KOTAK HITAM
-================================================== */
 
 for (let r = 0; r < rows; r++) {
 
@@ -579,9 +625,9 @@ for (let r = 0; r < rows; r++) {
 
 
 
-/* ==================================================
-   MENEMPATKAN JAWABAN
-================================================== */
+/* =====================================================
+   MENEMPATKAN KATA
+===================================================== */
 
 Object.keys(positions).forEach(number => {
 
@@ -590,28 +636,22 @@ Object.keys(positions).forEach(number => {
         answers[number];
 
 
-    const position =
+    const pos =
         positions[number];
 
 
-    for (
-        let i = 0;
-        i < word.length;
-        i++
-    ) {
+    for (let i = 0; i < word.length; i++) {
 
 
         let r =
-            position.row;
+            pos.row;
 
 
         let c =
-            position.col;
+            pos.col;
 
 
-        if (
-            position.direction === "H"
-        ) {
+        if (pos.direction === "H") {
 
             c += i;
 
@@ -624,33 +664,22 @@ Object.keys(positions).forEach(number => {
         }
 
 
-        if (
-            r >= rows ||
-            c >= cols
-        ) {
-
-            continue;
-
-        }
-
-
         const cell =
             cells[r][c];
 
 
-        cell.classList.remove(
-            "black"
-        );
+        cell.classList.remove("black");
 
-
-        /*
-           Jika kotak belum memiliki
-           input, buat input baru.
-        */
 
         let input =
             cell.querySelector("input");
 
+
+        /*
+        Kalau kotak merupakan
+        perpotongan dua kata,
+        gunakan input yang sama.
+        */
 
         if (!input) {
 
@@ -661,68 +690,76 @@ Object.keys(positions).forEach(number => {
             input.maxLength = 1;
 
 
-            input.dataset.answer =
-                word[i];
-
-
-            input.addEventListener(
-                "input",
-                function() {
-
-                    this.value =
-                        this.value
-                        .toUpperCase()
-                        .replace(
-                            /[^A-Z]/g,
-                            ""
-                        );
-
-                }
-            );
-
-
             cell.appendChild(input);
 
         }
+
+
+        /*
+        Simpan huruf jawaban
+        untuk kotak tersebut.
+        */
+
+        if (!input.dataset.answers) {
+
+            input.dataset.answers = "";
+
+        }
+
+
+        input.dataset.answers +=
+            word[i];
+
+
+        input.addEventListener(
+            "input",
+            function () {
+
+                this.value =
+                    this.value
+                    .toUpperCase()
+                    .replace(/[^A-Z]/g, "");
+
+            }
+        );
 
     }
 
 
 
-    /* ==================================================
-       NOMOR SOAL
-    ================================================== */
+    /* =================================================
+       NOMOR
+    ================================================= */
 
     const startCell =
-        cells
-        [position.row]
-        [position.col];
+        cells[pos.row][pos.col];
 
 
-    const numberLabel =
-        document.createElement("span");
+    /*
+       Hindari nomor ganda
+    */
 
+    if (!startCell.querySelector(".number")) {
 
-    numberLabel.classList.add(
-        "number"
-    );
+        const label =
+            document.createElement("span");
 
+        label.classList.add("number");
 
-    numberLabel.innerText =
-        number;
+        label.innerText =
+            number;
 
+        startCell.appendChild(label);
 
-    startCell.appendChild(
-        numberLabel
-    );
+    }
 
 });
 
 
 
-/* ==================================================
+/* =====================================================
    CEK JAWABAN
-================================================== */
+===================================================== */
 
 function checkAnswers() {
 
@@ -735,33 +772,61 @@ function checkAnswers() {
 
     let correct = 0;
 
-
-    let total =
-        inputs.length;
+    let total = inputs.length;
 
 
     inputs.forEach(input => {
 
 
-        const userAnswer =
-            input.value
-            .toUpperCase();
+        const user =
+            input.value.toUpperCase();
 
 
-        const correctAnswer =
-            input.dataset.answer;
+        /*
+        Kotak yang berpotongan
+        harus mempunyai satu huruf
+        yang sama.
+        */
+
+        const possible =
+            input.dataset.answers
+            .split("");
 
 
         if (
-            userAnswer ===
-            correctAnswer
+            user !== "" &&
+            possible.includes(user)
         ) {
 
-            input.style.background =
-                "#d4edda";
+            /*
+            Untuk kotak perpotongan,
+            huruf harus sama dengan
+            seluruh jawaban yang
+            melewati kotak tersebut.
+            */
+
+            const allSame =
+                possible.every(
+                    letter =>
+                        letter === user
+                );
 
 
-            correct++;
+            if (allSame) {
+
+                input.style.background =
+                    "#d4edda";
+
+                correct++;
+
+            }
+
+            else {
+
+                input.style.background =
+                    "#f8d7da";
+
+            }
 
         }
 
@@ -776,17 +841,13 @@ function checkAnswers() {
 
 
     const result =
-        document.getElementById(
-            "result"
-        );
+        document.getElementById("result");
 
 
-    if (
-        correct === total
-    ) {
+    if (correct === total) {
 
         result.innerHTML =
-            "🎉 Selamat! Semua jawaban benar!";
+            "🎉 SELAMAT! SEMUA JAWABAN BENAR!";
 
         result.style.color =
             "green";
@@ -807,9 +868,9 @@ function checkAnswers() {
 
 
 
-/* ==================================================
+/* =====================================================
    RESET
-================================================== */
+===================================================== */
 
 function resetGame() {
 
