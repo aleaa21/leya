@@ -20,7 +20,7 @@
 
         header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         header h1 {
@@ -38,9 +38,9 @@
         .main-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 25px;
+            gap: 30px;
             justify-content: center;
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
@@ -50,7 +50,6 @@
             align-items: center;
         }
 
-        /* Tabel Grid TTS */
         .tts-table {
             border-collapse: collapse;
             background-color: #000;
@@ -59,8 +58,8 @@
         }
 
         .tts-table td {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             padding: 0;
             margin: 0;
             position: relative;
@@ -79,7 +78,7 @@
             border: none;
             outline: none;
             text-align: center;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             text-transform: uppercase;
             background: transparent;
@@ -93,7 +92,7 @@
             position: absolute;
             top: 1px;
             left: 2px;
-            font-size: 9px;
+            font-size: 8px;
             font-weight: bold;
             color: #000;
             pointer-events: none;
@@ -127,7 +126,7 @@
         .clues-area {
             flex: 1;
             min-width: 300px;
-            max-width: 450px;
+            max-width: 500px;
             background: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -185,7 +184,7 @@
             <div id="result-msg"></div>
         </div>
 
-        <!-- Pertanyaan (Kunci Jawaban Sudah Dihapus) -->
+        <!-- Pertanyaan -->
         <div class="clues-area">
             <div class="clues-section">
                 <h3>MENDATAR</h3>
@@ -212,26 +211,27 @@
     </div>
 
     <script>
-        // Data Tata Letak Jawaban di Grid 10x10
+        const GRID_SIZE = 12;
+
+        // Data kata & posisi presisi (Grid 12x12)
         const dataSoal = [
             // Mendatar
             { word: "STARS", r: 0, c: 0, dir: "H", num: 1 },
             { word: "PYTHON", r: 2, c: 4, dir: "H", num: 4 },
             { word: "WISDOM", r: 4, c: 0, dir: "H", num: 6 },
-            { word: "ANALYSIS", r: 7, c: 1, dir: "H", num: 7 },
-            { word: "EXCEL", r: 9, c: 5, dir: "H", num: 9 },
+            { word: "ANALYSIS", r: 8, c: 1, dir: "H", num: 7 },
+            { word: "EXCEL", r: 10, c: 5, dir: "H", num: 9 },
 
             // Menurun
             { word: "JUDGEMENT", r: 0, c: 2, dir: "V", num: 2 },
             { word: "ETHICS", r: 2, c: 9, dir: "V", num: 3 },
             { word: "DATA", r: 4, c: 5, dir: "V", num: 5 },
             { word: "PORTOFOLIO", r: 1, c: 7, dir: "V", num: 8 },
-            { word: "SQL", r: 7, c: 6, dir: "V", num: 10 }
+            { word: "SQL", r: 8, c: 6, dir: "V", num: 10 }
         ];
 
-        let grid = Array(10).fill(null).map(() => Array(10).fill(null));
+        let grid = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null));
 
-        // Buat Matriks Grid
         dataSoal.forEach(s => {
             let row = s.r;
             let col = s.c;
@@ -246,11 +246,10 @@
             }
         });
 
-        // Gambar Grid menggunakan Table HTML
         const tbody = document.getElementById("board-body");
-        for (let r = 0; r < 10; r++) {
+        for (let r = 0; r < GRID_SIZE; r++) {
             const tr = document.createElement("tr");
-            for (let c = 0; c < 10; c++) {
+            for (let c = 0; c < GRID_SIZE; c++) {
                 const td = document.createElement("td");
                 const cellData = grid[r][c];
 
@@ -282,8 +281,8 @@
         function cekJawaban() {
             let benar = 0;
             let total = 0;
-            for (let r = 0; r < 10; r++) {
-                for (let c = 0; c < 10; c++) {
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
                     if (grid[r][c]) {
                         total++;
                         const input = document.querySelector(`input[data-r="${r}"][data-c="${c}"]`);
@@ -308,8 +307,8 @@
 
         function beriBantuan() {
             let salahOrKosong = [];
-            for (let r = 0; r < 10; r++) {
-                for (let c = 0; c < 10; c++) {
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
                     if (grid[r][c]) {
                         const input = document.querySelector(`input[data-r="${r}"][data-c="${c}"]`);
                         if (input.value.toUpperCase() !== grid[r][c].letter) {
