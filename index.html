@@ -4,119 +4,260 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TTS Seminar Profesi - HIMASTA UNMUL</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            padding-bottom: 50px;
+        }
+
+        header {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 24px 16px;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .board-container {
+            flex: 1;
+            min-width: 320px;
+            max-width: 460px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .board-wrapper {
+            background: #fff;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
         .crossword-board {
             display: grid;
-            grid-template-columns: repeat(10, minmax(0, 1fr));
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(10, 1fr);
             gap: 2px;
-            background-color: #000000;
-            border: 4px solid #000000;
-            padding: 2px;
-            border-radius: 4px;
-            max-width: 450px;
-            margin: 0 auto;
-        }
-        .cell {
+            background-color: #000;
+            border: 3px solid #000;
+            width: 100%;
             aspect-ratio: 1;
+        }
+
+        .cell {
             position: relative;
-            background-color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            text-transform: uppercase;
+            background-color: #fff;
+            width: 100%;
+            height: 100%;
         }
+
         .cell.black {
-            background-color: #000000;
+            background-color: #000;
         }
+
         .cell input {
             width: 100%;
             height: 100%;
             text-align: center;
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: #000000;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
             background: transparent;
             border: none;
             outline: none;
             text-transform: uppercase;
         }
+
         .cell input:focus {
             background-color: #e0f2fe;
         }
+
         .cell-number {
             position: absolute;
-            top: 1px;
+            top: 2px;
             left: 3px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            color: #000000;
+            font-size: 10px;
+            font-weight: bold;
+            color: #000;
             pointer-events: none;
             line-height: 1;
         }
+
         .cell.correct {
             background-color: #dcfce7 !important;
         }
+
         .cell.correct input {
             color: #15803d;
         }
+
         .cell.incorrect {
             background-color: #fee2e2 !important;
         }
+
         .cell.incorrect input {
             color: #b91c1c;
         }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+
+        button {
+            padding: 10px 18px;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-check {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .btn-check:hover {
+            background-color: #374151;
+        }
+
+        .btn-hint {
+            background-color: #f59e0b;
+            color: #fff;
+        }
+
+        .btn-hint:hover {
+            background-color: #d97706;
+        }
+
+        .btn-reset {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .btn-reset:hover {
+            background-color: #d1d5db;
+        }
+
+        .clues-container {
+            flex: 1;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .clue-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .clue-box h2 {
+            font-size: 16px;
+            font-weight: 900;
+            border-bottom: 2px solid #000;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .clue-box ul {
+            list-style: none;
+        }
+
+        .clue-box li {
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .clue-box li:hover {
+            color: #2563eb;
+        }
+
+        #status-message {
+            margin-top: 12px;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+        }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen text-gray-800 pb-12">
-    <!-- Header -->
-    <header class="bg-black text-white py-6 shadow-md mb-8">
-        <div class="max-w-5xl mx-auto px-4 text-center">
-            <h1 class="text-2xl md:text-3xl font-black uppercase tracking-wide">TEKA TEKI SILANG SEMINAR PROFESI</h1>
-            <p class="text-gray-400 text-sm mt-1">HIMASTA UNMUL</p>
-        </div>
+<body>
+
+    <header>
+        <h1>TEKA TEKI SILANG SEMINAR PROFESI</h1>
+        <p>HIMASTA UNMUL</p>
     </header>
 
-    <div class="max-w-5xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="container">
         <!-- Papan TTS -->
-        <div class="lg:col-span-6 flex flex-col items-center">
-            <div class="w-full bg-white p-4 rounded-xl shadow-md border border-gray-300 mb-4">
+        <div class="board-container">
+            <div class="board-wrapper">
                 <div id="board" class="crossword-board"></div>
             </div>
 
-            <!-- Tombol Aksi -->
-            <div class="flex flex-wrap gap-3 justify-center w-full">
-                <button onclick="checkAnswers()" class="px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-bold rounded-lg shadow transition text-sm">
-                    ✓ Cek Jawaban
-                </button>
-                <button onclick="revealHint()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg shadow transition text-sm">
-                    💡 Bantuan (Hint)
-                </button>
-                <button onclick="resetBoard()" class="px-5 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold rounded-lg transition text-sm">
-                    🔄 Reset
-                </button>
+            <div class="btn-group">
+                <button onclick="checkAnswers()" class="btn-check">✓ Cek Jawaban</button>
+                <button onclick="revealHint()" class="btn-hint">💡 Hint</button>
+                <button onclick="resetBoard()" class="btn-reset">🔄 Reset</button>
             </div>
             
-            <div id="status-message" class="mt-4 text-center font-bold text-sm"></div>
+            <div id="status-message"></div>
         </div>
 
-        <!-- Daftar Pertanyaan -->
-        <div class="lg:col-span-6 grid grid-cols-1 gap-4 h-fit">
-            <!-- Mendatar -->
-            <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
-                <h2 class="text-base font-black text-black border-b-2 border-black pb-2 mb-3">
-                    MENDATAR (ACROSS)
-                </h2>
-                <ul id="across-clues" class="space-y-2.5 text-sm text-gray-700"></ul>
+        <!-- Pertanyaan -->
+        <div class="clues-container">
+            <div class="clue-box">
+                <h2>MENDATAR (ACROSS)</h2>
+                <ul id="across-clues"></ul>
             </div>
 
-            <!-- Menurun -->
-            <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
-                <h2 class="text-base font-black text-black border-b-2 border-black pb-2 mb-3">
-                    MENURUN (DOWN)
-                </h2>
-                <ul id="down-clues" class="space-y-2.5 text-sm text-gray-700"></ul>
+            <div class="clue-box">
+                <h2>MENURUN (DOWN)</h2>
+                <ul id="down-clues"></ul>
             </div>
         </div>
     </div>
@@ -124,21 +265,18 @@
     <script>
         const GRID_SIZE = 10;
 
-        // Data Soal & Koordinat Presisi
         const words = [
-            // Mendatar
-            { number: 1, word: "STARS", direction: "across", row: 0, col: 0, clue: "(5 Huruf) Akronim dari tema seminar profesi di HIMASTA UNMUL (Statistics Towards Achievement and Responsible Success)" },
-            { number: 4, word: "PYTHON", direction: "across", row: 2, col: 4, clue: "(6 Huruf) Salah satu bahasa pemrograman utama yang paling sering digunakan oleh statistikawan dan data professional." },
-            { number: 6, word: "WISDOM", direction: "across", row: 4, col: 0, clue: "(6 Huruf) Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW (What should we do?)." },
-            { number: 7, word: "ANALYSIS", direction: "across", row: 7, col: 1, clue: "(8 Huruf) Tahapan atau proses mengolah data untuk menemukan wawasan (insight), hubungan, atau pola." },
-            { number: 9, word: "EXCEL", direction: "across", row: 9, col: 5, clue: "(5 Huruf) Aplikasi spreadsheet mendasar yang digunakan untuk pembersihan data (data preparation) dan tabel analisis." },
+            { number: 1, word: "STARS", direction: "across", row: 0, col: 0, clue: "(5 Huruf) Akronim dari tema seminar profesi di HIMASTA UNMUL" },
+            { number: 4, word: "PYTHON", direction: "across", row: 2, col: 4, clue: "(6 Huruf) Salah satu bahasa pemrograman utama data professional." },
+            { number: 6, word: "WISDOM", direction: "across", row: 4, col: 0, clue: "(6 Huruf) Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW." },
+            { number: 7, word: "ANALYSIS", direction: "across", row: 7, col: 1, clue: "(8 Huruf) Tahapan atau proses mengolah data untuk menemukan wawasan." },
+            { number: 9, word: "EXCEL", direction: "across", row: 9, col: 5, clue: "(5 Huruf) Aplikasi spreadsheet mendasar untuk data preparation." },
 
-            // Menurun
-            { number: 2, word: "JUDGEMENT", direction: "down", row: 0, col: 2, clue: "(9 Huruf) Pertimbangan kritis dan pemahaman konteks manusia yang tidak dapat digantikan oleh kecerdasan buatan (AI) secara utuh." },
-            { number: 3, word: "ETHICS", direction: "down", row: 2, col: 9, clue: "(6 Huruf) Prinsip moral, integritas, dan objektivitas dalam pengolahan data agar terhindar dari bias." },
-            { number: 5, word: "DATA", direction: "down", row: 4, col: 5, clue: "(4 Huruf) Bahan mentah berupa angka atau fakta yang berada di balik setiap pertanyaan bisnis maupun kebijakan." },
-            { number: 8, word: "PORTOFOLIO", direction: "down", row: 1, col: 7, clue: "(9 Huruf) Kumpulan rekam jejak hasil karya atau projek nyata yang perlu dibangun mahasiswa sejak bangku kuliah (Start Early)." },
-            { number: 10, word: "SQL", direction: "down", row: 7, col: 6, clue: "(3 Huruf) Bahasa kueri standar yang digunakan untuk mengelola dan mengekstrak data dari sistem basis data (database)." }
+            { number: 2, word: "JUDGEMENT", direction: "down", row: 0, col: 2, clue: "(9 Huruf) Pertimbangan kritis manusia yang tidak dapat digantikan AI." },
+            { number: 3, word: "ETHICS", direction: "down", row: 2, col: 9, clue: "(6 Huruf) Prinsip moral dan objektivitas dalam pengolahan data." },
+            { number: 5, word: "DATA", direction: "down", row: 4, col: 5, clue: "(4 Huruf) Bahan mentah berupa angka atau fakta." },
+            { number: 8, word: "PORTOFOLIO", direction: "down", row: 1, col: 7, clue: "(9 Huruf) Kumpulan rekam jejak hasil karya yang perlu dibangun mahasiswa." },
+            { number: 10, word: "SQL", direction: "down", row: 7, col: 6, clue: "(3 Huruf) Bahasa kueri standar untuk mengelola database." }
         ];
 
         let gridData = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null));
@@ -201,7 +339,6 @@
                 }
             }
 
-            // Render Soal
             const acrossEl = document.getElementById("across-clues");
             const downEl = document.getElementById("down-clues");
             acrossEl.innerHTML = "";
@@ -209,7 +346,6 @@
 
             words.sort((a,b) => a.number - b.number).forEach(item => {
                 const li = document.createElement("li");
-                li.className = "cursor-pointer hover:text-blue-600 transition";
                 li.innerHTML = `<strong>${item.number}.</strong> ${item.clue}`;
                 li.onclick = () => {
                     const input = document.querySelector(`input[data-row="${item.row}"][data-col="${item.col}"]`);
@@ -259,10 +395,10 @@
 
             const msgEl = document.getElementById("status-message");
             if (correctCount === totalCells) {
-                msgEl.className = "mt-4 text-center font-bold text-green-600 text-base";
-                msgEl.innerText = "🎉 Selamat! Semua jawaban kamu BENAR!";
+                msgEl.style.color = "#16a34a";
+                msgEl.innerText = "🎉 Selamat! Semua jawaban BENAR!";
             } else {
-                msgEl.className = "mt-4 text-center font-bold text-amber-600 text-sm";
+                msgEl.style.color = "#d97706";
                 msgEl.innerText = `Jawaban benar: ${correctCount} / ${totalCells} huruf.`;
             }
         }
