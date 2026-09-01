@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -20,6 +19,7 @@
             background: white;
             padding: 30px;
             border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         h1 {
@@ -32,6 +32,7 @@
             gap: 2px;
             justify-content: center;
             margin: 30px 0;
+            overflow-x: auto;
         }
 
         .cell {
@@ -56,6 +57,7 @@
             font-weight: bold;
             text-transform: uppercase;
             outline: none;
+            background: transparent;
         }
 
         .number {
@@ -64,6 +66,7 @@
             left: 2px;
             font-size: 9px;
             z-index: 2;
+            pointer-events: none;
         }
 
         .questions {
@@ -94,10 +97,15 @@
             cursor: pointer;
         }
 
+        button:hover {
+            background: #444;
+        }
+
         #hasil {
             text-align: center;
             font-size: 20px;
             font-weight: bold;
+            margin-top: 15px;
         }
 
         @media(max-width: 800px) {
@@ -117,51 +125,36 @@
 <body>
 
 <div class="container">
-
     <h1>🧩 TEKA-TEKI SILANG</h1>
-    <p style="text-align:center;">
-        <b>HIMASTA UNMUL</b>
-    </p>
+    <p style="text-align:center;"><b>HIMASTA UNMUL</b></p>
 
     <div class="tts" id="tts"></div>
 
     <button onclick="cekJawaban()">CEK JAWABAN</button>
-
     <div id="hasil"></div>
 
     <div class="questions">
-
         <div>
             <h2>MENDATAR (ACROSS)</h2>
-
             <ol>
                 <li>
-                    <b>(5 Huruf)</b>
-                    Akronim dari tema seminar profesi di HIMASTA UNMUL
+                    <b>(5 Huruf)</b> Akronim dari tema seminar profesi di HIMASTA UNMUL 
                     (<i>Statistics Towards Achievement and Responsible Success</i>).
                 </li>
-
                 <li value="4">
-                    <b>(6 Huruf)</b>
-                    Salah satu bahasa pemrograman utama yang paling sering
+                    <b>(6 Huruf)</b> Salah satu bahasa pemrograman utama yang paling sering 
                     digunakan oleh statistikawan dan <i>data professional</i>.
                 </li>
-
                 <li value="6">
-                    <b>(9 Huruf)</b>
-                    Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW
+                    <b>(9 Huruf)</b> Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW 
                     (<i>What should we do?</i>).
                 </li>
-
                 <li value="7">
-                    <b>(8 Huruf)</b>
-                    Tahapan atau proses mengolah data untuk menemukan wawasan
+                    <b>(8 Huruf)</b> Tahapan atau proses mengolah data untuk menemukan wawasan 
                     (<i>insight</i>), hubungan, atau pola.
                 </li>
-
                 <li value="9">
-                    <b>(5 Huruf)</b>
-                    Aplikasi <i>spreadsheet</i> mendasar yang digunakan untuk
+                    <b>(5 Huruf)</b> Aplikasi <i>spreadsheet</i> mendasar yang digunakan untuk 
                     pembersihan data dan tabel analisis.
                 </li>
             </ol>
@@ -169,162 +162,62 @@
 
         <div>
             <h2>MENURUN (DOWN)</h2>
-
             <ol>
                 <li value="2">
-                    <b>(6 Huruf)</b>
-                    Pertimbangan kritis dan pemahaman konteks manusia yang
+                    <b>(6 Huruf)</b> Pertimbangan kritis dan pemahaman konteks manusia yang 
                     tidak dapat digantikan oleh kecerdasan buatan (AI) secara utuh.
                 </li>
-
                 <li value="3">
-                    <b>(6 Huruf)</b>
-                    Prinsip moral, integritas, dan objektivitas dalam pengolahan
+                    <b>(6 Huruf)</b> Prinsip moral, integritas, dan objektivitas dalam pengolahan 
                     data agar terhindar dari bias.
                 </li>
-
                 <li value="5">
-                    <b>(4 Huruf)</b>
-                    Bahan mentah berupa angka atau fakta yang berada di balik
+                    <b>(4 Huruf)</b> Bahan mentah berupa angka atau fakta yang berada di balik 
                     setiap pertanyaan bisnis maupun kebijakan.
                 </li>
-
                 <li value="8">
-                    <b>(10 Huruf)</b>
-                    Kumpulan rekam jejak hasil karya atau projek nyata yang perlu
+                    <b>(10 Huruf)</b> Kumpulan rekam jejak hasil karya atau projek nyata yang perlu 
                     dibangun mahasiswa sejak bangku kuliah (<i>Start Early</i>).
                 </li>
-
                 <li value="10">
-                    <b>(3 Huruf)</b>
-                    Bahasa kueri standar yang digunakan untuk mengelola dan
+                    <b>(3 Huruf)</b> Bahasa kueri standar yang digunakan untuk mengelola dan 
                     mengekstrak data dari sistem basis data (<i>database</i>).
                 </li>
             </ol>
         </div>
-
     </div>
 </div>
 
-
 <script>
-
 const rows = 15;
 const cols = 20;
 
-const grid = Array.from(
-    {length: rows},
-    () => Array(cols).fill(null)
-);
-
-/*
-    Format:
-    nomor : {
-        answer,
-        row,
-        col,
-        direction
-    }
-*/
+const grid = Array.from({length: rows}, () => Array(cols).fill(null));
 
 const words = {
-
-    1: {
-        answer: "STARS",
-        row: 1,
-        col: 2,
-        direction: "across"
-    },
-
-    2: {
-        answer: "WISDOM",
-        row: 0,
-        col: 4,
-        direction: "down"
-    },
-
-    3: {
-        answer: "ETHICS",
-        row: 4,
-        col: 7,
-        direction: "down"
-    },
-
-    4: {
-        answer: "PYTHON",
-        row: 3,
-        col: 1,
-        direction: "across"
-    },
-
-    5: {
-        answer: "DATA",
-        row: 6,
-        col: 9,
-        direction: "down"
-    },
-
-    6: {
-        answer: "JUDGEMENT",
-        row: 8,
-        col: 2,
-        direction: "across"
-    },
-
-    7: {
-        answer: "ANALYSIS",
-        row: 10,
-        col: 5,
-        direction: "across"
-    },
-
-    8: {
-        answer: "PORTOFOLIO",
-        row: 5,
-        col: 14,
-        direction: "down"
-    },
-
-    9: {
-        answer: "EXCEL",
-        row: 12,
-        col: 1,
-        direction: "across"
-    },
-
-    10: {
-        answer: "SQL",
-        row: 9,
-        col: 18,
-        direction: "down"
-    }
+    1: { answer: "STARS", row: 1, col: 2, direction: "across" },
+    2: { answer: "WISDOM", row: 0, col: 4, direction: "down" },
+    3: { answer: "ETHICS", row: 4, col: 7, direction: "down" },
+    4: { answer: "PYTHON", row: 3, col: 1, direction: "across" },
+    5: { answer: "DATA", row: 6, col: 9, direction: "down" },
+    6: { answer: "JUDGEMENT", row: 8, col: 2, direction: "across" },
+    7: { answer: "ANALYSIS", row: 10, col: 5, direction: "across" },
+    8: { answer: "PORTOFOLIO", row: 5, col: 14, direction: "down" },
+    9: { answer: "EXCEL", row: 12, col: 1, direction: "across" },
+    10: { answer: "SQL", row: 9, col: 18, direction: "down" }
 };
 
-
 // Masukkan kata ke grid
-
 for (const [number, word] of Object.entries(words)) {
-
     let r = word.row;
     let c = word.col;
 
     for (let i = 0; i < word.answer.length; i++) {
-
-        if (
-            r >= 0 &&
-            r < rows &&
-            c >= 0 &&
-            c < cols
-        ) {
-
+        if (r >= 0 && r < rows && c >= 0 && c < cols) {
             grid[r][c] = {
                 letter: word.answer[i],
-                number:
-                    i === 0
-                    ? number
-                    : grid[r][c]?.number || null
+                number: i === 0 ? number : grid[r][c]?.number || null
             };
-
         }
 
         if (word.direction === "across") {
@@ -335,87 +228,53 @@ for (const [number, word] of Object.entries(words)) {
     }
 }
 
-
 // Buat tampilan TTS
-
 const tts = document.getElementById("tts");
 
 grid.forEach((row, r) => {
-
     row.forEach((cell, c) => {
-
         const box = document.createElement("div");
 
         if (cell) {
-
             box.className = "cell";
 
             if (cell.number) {
-
                 const number = document.createElement("span");
-
                 number.className = "number";
                 number.textContent = cell.number;
-
                 box.appendChild(number);
             }
 
             const input = document.createElement("input");
-
             input.maxLength = 1;
-
             input.dataset.answer = cell.letter;
-
             box.appendChild(input);
-
         } else {
-
             box.className = "cell black";
-
         }
 
         tts.appendChild(box);
-
     });
-
 });
 
-
 // Cek jawaban
-
 function cekJawaban() {
-
     const inputs = document.querySelectorAll(".cell input");
-
     let benar = 0;
     let total = inputs.length;
 
     inputs.forEach(input => {
-
-        if (
-            input.value.toUpperCase()
-            === input.dataset.answer
-        ) {
-
+        if (input.value.toUpperCase() === input.dataset.answer) {
             benar++;
-
             input.style.background = "#d4edda";
-
         } else {
-
             input.style.background = "#f8d7da";
-
         }
-
     });
 
-    document.getElementById("hasil").innerHTML =
-        `🎯 Benar: ${benar} dari ${total} kotak`;
-
+    document.getElementById("hasil").innerHTML = `🎯 Benar: ${benar} dari ${total} kotak`;
 }
-
 </script>
 
 </body>
 </html>
-```
