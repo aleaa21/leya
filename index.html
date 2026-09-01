@@ -142,18 +142,18 @@
                     (<i>Statistics Towards Achievement and Responsible Success</i>).
                 </li>
                 <li value="4">
-                    <b>(6 Huruf)</b> Salah satu bahasa pemrograman utama yang paling sering 
-                    digunakan oleh statistikawan dan <i>data professional</i>.
+                    <b>(10 Huruf)</b> Kumpulan rekam jejak hasil karya atau projek nyata yang perlu 
+                    dibangun mahasiswa sejak bangku kuliah (<i>Start Early</i>).
                 </li>
-                <li value="6">
-                    <b>(9 Huruf)</b> Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW 
-                    (<i>What should we do?</i>).
-                </li>
-                <li value="7">
+                <li value="5">
                     <b>(8 Huruf)</b> Tahapan atau proses mengolah data untuk menemukan wawasan 
                     (<i>insight</i>), hubungan, atau pola.
                 </li>
-                <li value="9">
+                <li value="7">
+                    <b>(9 Huruf)</b> Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW 
+                    (<i>What should we do?</i>).
+                </li>
+                <li value="8">
                     <b>(5 Huruf)</b> Aplikasi <i>spreadsheet</i> mendasar yang digunakan untuk 
                     pembersihan data dan tabel analisis.
                 </li>
@@ -168,16 +168,16 @@
                     tidak dapat digantikan oleh kecerdasan buatan (AI) secara utuh.
                 </li>
                 <li value="3">
+                    <b>(6 Huruf)</b> Salah satu bahasa pemrograman utama yang paling sering 
+                    digunakan oleh statistikawan dan <i>data professional</i>.
+                </li>
+                <li value="6">
                     <b>(6 Huruf)</b> Prinsip moral, integritas, dan objektivitas dalam pengolahan 
                     data agar terhindar dari bias.
                 </li>
-                <li value="5">
+                <li value="9">
                     <b>(4 Huruf)</b> Bahan mentah berupa angka atau fakta yang berada di balik 
                     setiap pertanyaan bisnis maupun kebijakan.
-                </li>
-                <li value="8">
-                    <b>(10 Huruf)</b> Kumpulan rekam jejak hasil karya atau projek nyata yang perlu 
-                    dibangun mahasiswa sejak bangku kuliah (<i>Start Early</i>).
                 </li>
                 <li value="10">
                     <b>(3 Huruf)</b> Bahasa kueri standar yang digunakan untuk mengelola dan 
@@ -194,17 +194,18 @@ const cols = 20;
 
 const grid = Array.from({length: rows}, () => Array(cols).fill(null));
 
+// Koordinat disesuaikan dengan nomor soal yang benar
 const words = {
     1: { answer: "STARS", row: 1, col: 2, direction: "across" },
-    2: { answer: "WISDOM", row: 0, col: 4, direction: "down" },
-    3: { answer: "ETHICS", row: 3, col: 6, direction: "down" },
-    4: { answer: "PYTHON", row: 3, col: 1, direction: "across" },
-    5: { answer: "DATA", row: 5, col: 8, direction: "down" },
-    6: { answer: "JUDGEMENT", row: 5, col: 5, direction: "across" },
-    7: { answer: "ANALYSIS", row: 7, col: 3, direction: "across" },
-    8: { answer: "PORTOFOLIO", row: 3, col: 13, direction: "down" },
-    9: { answer: "EXCEL", row: 9, col: 1, direction: "across" },
-    10: { answer: "SQL", row: 7, col: 16, direction: "down" }
+    2: { answer: "WISDOM", row: 0, col: 5, direction: "down" },
+    3: { answer: "PYTHON", row: 3, col: 1, direction: "down" },
+    4: { answer: "PORTOFOLIO", row: 5, col: 3, direction: "across" },
+    5: { answer: "ANALYSIS", row: 7, col: 4, direction: "across" },
+    6: { answer: "ETHICS", row: 3, col: 8, direction: "down" },
+    7: { answer: "JUDGEMENT", row: 9, col: 2, direction: "across" },
+    8: { answer: "EXCEL", row: 11, col: 6, direction: "across" },
+    9: { answer: "DATA", row: 6, col: 11, direction: "down" },
+    10: { answer: "SQL", row: 8, col: 14, direction: "down" }
 };
 
 // Masukkan kata ke grid
