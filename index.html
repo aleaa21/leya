@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Teka Teki Silang - Seminar Profesi</title>
+    <title>Teka Teki Silang Seminar Profesi</title>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
 
         body {
             margin: 0;
-            padding: 30px;
             font-family: Arial, sans-serif;
             background: #f5f5f5;
             color: #222;
@@ -22,144 +24,201 @@
         .container {
             max-width: 1100px;
             margin: auto;
+            padding: 30px 20px 50px;
             text-align: center;
         }
 
         h1 {
             margin-bottom: 5px;
+            font-size: 32px;
         }
 
         .subtitle {
-            margin-bottom: 25px;
             color: #666;
+            margin-bottom: 30px;
         }
 
+
         /* =========================
-           GRID TTS
+           TTS
         ========================= */
 
         #crossword {
             display: grid;
-            grid-template-columns: repeat(11, 45px);
-            grid-template-rows: repeat(16, 45px);
 
-            gap: 1px;
+            grid-template-columns:
+                repeat(8, 55px);
+
+            grid-template-rows:
+                repeat(12, 55px);
+
+            gap: 2px;
 
             justify-content: center;
+
             margin: 30px auto;
 
             background: #111;
-            padding: 4px;
-            width: fit-content;
+
+            padding: 5px;
+
+            width: max-content;
+
+            border-radius: 5px;
         }
 
+
         .cell {
-            width: 45px;
-            height: 45px;
-            position: relative;
+            width: 55px;
+            height: 55px;
+
             background: white;
+
+            position: relative;
         }
+
 
         .black {
             background: #111;
         }
 
+
         .cell input {
             width: 100%;
             height: 100%;
+
             border: none;
             outline: none;
 
+            background: white;
+
             text-align: center;
 
-            font-size: 22px;
-            font-weight: bold;
-            text-transform: uppercase;
+            font-size: 24px;
 
-            background: white;
+            font-weight: bold;
+
+            text-transform: uppercase;
         }
+
 
         .cell input:focus {
-            background: #eaf4ff;
+            background: #e8f1ff;
         }
+
 
         .number {
             position: absolute;
-            top: 2px;
-            left: 3px;
 
-            font-size: 11px;
+            top: 3px;
+            left: 4px;
+
+            font-size: 12px;
+
             font-weight: bold;
 
-            z-index: 2;
+            z-index: 5;
+
             pointer-events: none;
         }
 
-        /* =========================
-           CLUE
-        ========================= */
-
-        .clues {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-
-            margin-top: 30px;
-            text-align: left;
-        }
-
-        .clue-box {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-        }
-
-        .clue-box h2 {
-            margin-top: 0;
-        }
-
-        .clue-box p {
-            margin: 10px 0;
-            line-height: 1.5;
-        }
 
         /* =========================
            BUTTON
         ========================= */
 
         .buttons {
-            margin-top: 25px;
+            margin: 25px 0;
         }
+
 
         button {
             padding: 12px 25px;
+
             margin: 5px;
 
             border: none;
+
             border-radius: 8px;
 
             cursor: pointer;
 
             font-size: 15px;
+
             font-weight: bold;
         }
+
 
         .check {
             background: #222;
             color: white;
         }
 
+
         .reset {
             background: #ddd;
             color: #222;
         }
 
+
         #result {
-            margin-top: 15px;
+            margin: 15px;
+
             font-weight: bold;
+
+            font-size: 17px;
         }
+
+
+        /* =========================
+           CLUES
+        ========================= */
+
+        .clues {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 25px;
+
+            margin-top: 30px;
+
+            text-align: left;
+        }
+
+
+        .clue-box {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 12px rgba(0,0,0,0.08);
+        }
+
+
+        .clue-box h2 {
+
+            margin-top: 0;
+
+            border-bottom: 1px solid #ddd;
+
+            padding-bottom: 10px;
+        }
+
+
+        .clue-box p {
+
+            line-height: 1.6;
+
+            margin: 12px 0;
+        }
+
 
         /* =========================
            RESPONSIVE
@@ -167,35 +226,53 @@
 
         @media (max-width: 700px) {
 
-            body {
-                padding: 15px;
-            }
-
             #crossword {
-                transform: scale(0.75);
-                transform-origin: top center;
 
-                margin-bottom: -100px;
+                transform: scale(0.65);
+
+                transform-origin:
+                    top center;
+
+                margin-bottom: -170px;
             }
+
 
             .clues {
-                grid-template-columns: 1fr;
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            h1 {
+
+                font-size: 25px;
             }
         }
+
     </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-    <h1>TEKA TEKI SILANG</h1>
+
+    <h1>
+        TEKA TEKI SILANG
+    </h1>
+
+
     <div class="subtitle">
         SEMINAR PROFESI HIMASTA UNMUL
     </div>
 
+
     <!-- =========================
-         GRID
+         GRID TTS
     ========================== -->
 
     <div id="crossword"></div>
@@ -207,15 +284,25 @@
 
     <div class="buttons">
 
-        <button class="check" onclick="checkAnswers()">
+        <button
+            class="check"
+            onclick="checkAnswers()">
+
             ✓ Cek Jawaban
+
         </button>
 
-        <button class="reset" onclick="resetGame()">
+
+        <button
+            class="reset"
+            onclick="resetGame()">
+
             ↻ Reset
+
         </button>
 
     </div>
+
 
     <div id="result"></div>
 
@@ -226,65 +313,99 @@
 
     <div class="clues">
 
+
         <div class="clue-box">
 
-            <h2>➡️ Mendatar</h2>
+            <h2>
+                📝 Petunjuk
+            </h2>
+
 
             <p>
-                <b>2.</b> Bahasa pemrograman yang banyak digunakan
-                dalam pengolahan dan analisis data.
+                <b>1.</b>
+                Akronim dari tema seminar profesi
+                <i>Statistics Towards Achievement
+                and Responsible Success.</i>
             </p>
 
-            <p>
-                <b>3.</b> Pemahaman atau kebijaksanaan yang diperoleh
-                dari pengetahuan dan pengalaman.
-            </p>
 
             <p>
-                <b>5.</b> Aplikasi spreadsheet yang digunakan untuk
-                pengolahan dan analisis data.
+                <b>2.</b>
+                Pertimbangan kritis dan pemahaman
+                konteks manusia yang tidak dapat
+                digantikan oleh AI secara utuh.
             </p>
 
-            <p>
-                <b>8.</b> Bahan mentah berupa angka atau fakta yang
-                menjadi dasar analisis.
-            </p>
 
             <p>
-                <b>10.</b> Bahasa kueri yang digunakan untuk mengelola
-                dan mengambil data dari database.
+                <b>3.</b>
+                Bahasa pemrograman yang banyak
+                digunakan dalam pengolahan dan
+                analisis data.
+            </p>
+
+
+            <p>
+                <b>4.</b>
+                Kumpulan rekam jejak hasil karya
+                atau proyek nyata yang dibangun
+                mahasiswa.
+            </p>
+
+
+            <p>
+                <b>5.</b>
+                Proses mengolah data untuk menemukan
+                wawasan, hubungan, atau pola.
             </p>
 
         </div>
 
 
+
         <div class="clue-box">
 
-            <h2>⬇️ Menurun</h2>
+            <h2>
+                📝 Petunjuk
+            </h2>
+
 
             <p>
-                <b>1.</b> Akronim dari tema seminar profesi:
-                Statistics Towards Achievement and Responsible Success.
+                <b>6.</b>
+                Tingkat keputusan tertinggi dalam
+                kerangka kerja DIKW
+                (<i>What should we do?</i>).
             </p>
 
-            <p>
-                <b>4.</b> Proses mengolah data untuk menemukan pola,
-                hubungan, dan wawasan.
-            </p>
 
             <p>
-                <b>6.</b> Tingkat keputusan tertinggi dalam kerangka
-                DIKW.
+                <b>7.</b>
+                Prinsip moral, integritas, dan
+                objektivitas dalam pengolahan data
+                agar terhindar dari bias.
             </p>
 
-            <p>
-                <b>7.</b> Prinsip moral, integritas, dan objektivitas
-                dalam pengolahan data.
-            </p>
 
             <p>
-                <b>9.</b> Kumpulan hasil karya atau proyek nyata
-                yang dibangun sebagai rekam jejak profesional.
+                <b>8.</b>
+                Aplikasi spreadsheet yang digunakan
+                untuk pembersihan data dan tabel
+                analisis.
+            </p>
+
+
+            <p>
+                <b>9.</b>
+                Bahan mentah berupa angka atau fakta
+                yang menjadi dasar setiap analisis.
+            </p>
+
+
+            <p>
+                <b>10.</b>
+                Bahasa kueri standar yang digunakan
+                untuk mengelola dan mengekstrak data
+                dari database.
             </p>
 
         </div>
@@ -294,272 +415,430 @@
 </div>
 
 
+
 <script>
 
-    /*
-    ============================================
-       KUNCI JAWABAN
-    ============================================
-    */
 
-    const answers = {
+/* ==================================================
+   KUNCI JAWABAN
+   NOMOR SUDAH DISESUAIKAN DENGAN ANGKA DALAM KURUNG
+================================================== */
 
-        1: "STARS",
-        2: "PYTHON",
-        3: "WISDOM",
-        4: "ANALYSIS",
-        5: "EXCEL",
-        6: "JUDGEMENT",
-        7: "ETHICS",
-        8: "DATA",
-        9: "PORTFOLIO",
-        10: "SQL"
+const answers = {
 
-    };
+    1: "STARS",
 
+    2: "WISDOM",
 
-    /*
-    ============================================
-       UKURAN GRID
-       16 BARIS x 11 KOLOM
-    ============================================
-    */
+    3: "PYTHON",
 
-    const rows = 16;
-    const cols = 11;
+    4: "PORTFOLIO",
+
+    5: "ANALYSIS",
+
+    6: "JUDGEMENT",
+
+    7: "ETHICS",
+
+    8: "EXCEL",
+
+    9: "DATA",
+
+    10: "SQL"
+
+};
 
 
-    /*
-    ============================================
-       POSISI KATA
-       row dan col dimulai dari 0
 
-       direction:
-       H = Horizontal / Mendatar
-       V = Vertical / Menurun
-    ============================================
-    */
+/* ==================================================
+   POSISI KATA
 
-    const positions = {
+   row = baris
+   col = kolom
 
-        1:  { row: 8,  col: 6, direction: "V" },
+   H = horizontal
+   V = vertical
+================================================== */
 
-        2:  { row: 9,  col: 4, direction: "H" },
+const positions = {
 
-        3:  { row: 7,  col: 4, direction: "H" },
-
-        4:  { row: 2,  col: 7, direction: "V" },
-
-        5:  { row: 8,  col: 3, direction: "H" },
-
-        6:  { row: 2,  col: 0, direction: "H" },
-
-        7:  { row: 5,  col: 6, direction: "V" },
-
-        8:  { row: 11, col: 5, direction: "H" },
-
-        9:  { row: 0,  col: 8, direction: "V" },
-
-        10: { row: 12, col: 6, direction: "H" }
-
-    };
+    1: {
+        row: 5,
+        col: 0,
+        direction: "V"
+    },
 
 
-    /*
-    ============================================
-       MEMBUAT GRID
-    ============================================
-    */
-
-    const crossword = document.getElementById("crossword");
-
-    let cells = [];
+    2: {
+        row: 5,
+        col: 1,
+        direction: "V"
+    },
 
 
-    for (let r = 0; r < rows; r++) {
+    3: {
+        row: 6,
+        col: 4,
+        direction: "V"
+    },
 
-        cells[r] = [];
 
-        for (let c = 0; c < cols; c++) {
+    4: {
+        row: 0,
+        col: 6,
+        direction: "V"
+    },
 
-            const cell = document.createElement("div");
 
-            cell.classList.add("cell");
-            cell.classList.add("black");
+    5: {
+        row: 7,
+        col: 0,
+        direction: "H"
+    },
 
-            crossword.appendChild(cell);
 
-            cells[r][c] = cell;
+    6: {
+        row: 0,
+        col: 1,
+        direction: "V"
+    },
+
+
+    7: {
+        row: 2,
+        col: 5,
+        direction: "V"
+    },
+
+
+    8: {
+        row: 3,
+        col: 3,
+        direction: "V"
+    },
+
+
+    9: {
+        row: 2,
+        col: 1,
+        direction: "H"
+    },
+
+
+    10: {
+        row: 7,
+        col: 5,
+        direction: "V"
+    }
+
+};
+
+
+
+/* ==================================================
+   UKURAN GRID
+================================================== */
+
+const rows = 12;
+
+const cols = 8;
+
+
+const crossword =
+    document.getElementById("crossword");
+
+
+let cells = [];
+
+
+
+/* ==================================================
+   MEMBUAT SEMUA KOTAK HITAM
+================================================== */
+
+for (let r = 0; r < rows; r++) {
+
+    cells[r] = [];
+
+    for (let c = 0; c < cols; c++) {
+
+        const cell =
+            document.createElement("div");
+
+        cell.classList.add("cell");
+
+        cell.classList.add("black");
+
+        crossword.appendChild(cell);
+
+        cells[r][c] = cell;
+
+    }
+
+}
+
+
+
+/* ==================================================
+   MENEMPATKAN JAWABAN
+================================================== */
+
+Object.keys(positions).forEach(number => {
+
+
+    const word =
+        answers[number];
+
+
+    const position =
+        positions[number];
+
+
+    for (
+        let i = 0;
+        i < word.length;
+        i++
+    ) {
+
+
+        let r =
+            position.row;
+
+
+        let c =
+            position.col;
+
+
+        if (
+            position.direction === "H"
+        ) {
+
+            c += i;
+
+        }
+
+        else {
+
+            r += i;
+
+        }
+
+
+        if (
+            r >= rows ||
+            c >= cols
+        ) {
+
+            continue;
+
+        }
+
+
+        const cell =
+            cells[r][c];
+
+
+        cell.classList.remove(
+            "black"
+        );
+
+
+        /*
+           Jika kotak belum memiliki
+           input, buat input baru.
+        */
+
+        let input =
+            cell.querySelector("input");
+
+
+        if (!input) {
+
+            input =
+                document.createElement("input");
+
+
+            input.maxLength = 1;
+
+
+            input.dataset.answer =
+                word[i];
+
+
+            input.addEventListener(
+                "input",
+                function() {
+
+                    this.value =
+                        this.value
+                        .toUpperCase()
+                        .replace(
+                            /[^A-Z]/g,
+                            ""
+                        );
+
+                }
+            );
+
+
+            cell.appendChild(input);
 
         }
 
     }
 
 
-    /*
-    ============================================
-       MENEMPATKAN KATA
-    ============================================
-    */
 
-    Object.keys(positions).forEach(number => {
+    /* ==================================================
+       NOMOR SOAL
+    ================================================== */
 
-        const word = answers[number];
-
-        const pos = positions[number];
-
-        for (let i = 0; i < word.length; i++) {
-
-            let r = pos.row;
-            let c = pos.col;
-
-            if (pos.direction === "H") {
-
-                c += i;
-
-            } else {
-
-                r += i;
-
-            }
+    const startCell =
+        cells
+        [position.row]
+        [position.col];
 
 
-            if (r >= rows || c >= cols) {
-                continue;
-            }
+    const numberLabel =
+        document.createElement("span");
 
 
-            const cell = cells[r][c];
+    numberLabel.classList.add(
+        "number"
+    );
 
-            cell.classList.remove("black");
+
+    numberLabel.innerText =
+        number;
 
 
-            /*
-            Jangan membuat input baru
-            jika kotak sudah memiliki input.
-            */
+    startCell.appendChild(
+        numberLabel
+    );
 
-            if (!cell.querySelector("input")) {
+});
 
-                const input = document.createElement("input");
 
-                input.maxLength = 1;
 
-                input.dataset.answer = word[i];
+/* ==================================================
+   CEK JAWABAN
+================================================== */
 
-                input.addEventListener("input", function() {
+function checkAnswers() {
 
-                    this.value = this.value
-                        .toUpperCase()
-                        .replace(/[^A-Z]/g, "");
 
-                });
+    const inputs =
+        document.querySelectorAll(
+            "#crossword input"
+        );
 
-                cell.appendChild(input);
 
-            }
+    let correct = 0;
+
+
+    let total =
+        inputs.length;
+
+
+    inputs.forEach(input => {
+
+
+        const userAnswer =
+            input.value
+            .toUpperCase();
+
+
+        const correctAnswer =
+            input.dataset.answer;
+
+
+        if (
+            userAnswer ===
+            correctAnswer
+        ) {
+
+            input.style.background =
+                "#d4edda";
+
+
+            correct++;
 
         }
 
+        else {
 
-        /*
-        ========================================
-           NOMOR SOAL
-        ========================================
-        */
+            input.style.background =
+                "#f8d7da";
 
-        let startCell = cells[pos.row][pos.col];
-
-        const numberLabel = document.createElement("span");
-
-        numberLabel.classList.add("number");
-
-        numberLabel.innerText = number;
-
-        startCell.appendChild(numberLabel);
+        }
 
     });
 
 
-    /*
-    ============================================
-       CEK JAWABAN
-    ============================================
-    */
-
-    function checkAnswers() {
-
-        const inputs = document.querySelectorAll("#crossword input");
-
-        let correct = 0;
-        let total = inputs.length;
-
-        inputs.forEach(input => {
-
-            if (
-                input.value.toUpperCase() ===
-                input.dataset.answer
-            ) {
-
-                input.style.background = "#d4edda";
-
-                correct++;
-
-            } else {
-
-                input.style.background = "#f8d7da";
-
-            }
-
-        });
+    const result =
+        document.getElementById(
+            "result"
+        );
 
 
-        const result = document.getElementById("result");
+    if (
+        correct === total
+    ) {
 
-        if (correct === total) {
+        result.innerHTML =
+            "🎉 Selamat! Semua jawaban benar!";
 
-            result.innerHTML =
-                "🎉 SELAMAT! Semua jawaban benar!";
-
-            result.style.color = "green";
-
-        } else {
-
-            result.innerHTML =
-                `Jawaban benar: ${correct} dari ${total} kotak.`;
-
-            result.style.color = "#333";
-
-        }
+        result.style.color =
+            "green";
 
     }
 
+    else {
 
-    /*
-    ============================================
-       RESET
-    ============================================
-    */
+        result.innerHTML =
+            `Jawaban benar: ${correct} dari ${total} kotak.`;
 
-    function resetGame() {
-
-        const inputs =
-            document.querySelectorAll("#crossword input");
-
-        inputs.forEach(input => {
-
-            input.value = "";
-
-            input.style.background = "white";
-
-        });
-
-
-        document.getElementById("result").innerHTML = "";
+        result.style.color =
+            "#333";
 
     }
+
+}
+
+
+
+/* ==================================================
+   RESET
+================================================== */
+
+function resetGame() {
+
+
+    const inputs =
+        document.querySelectorAll(
+            "#crossword input"
+        );
+
+
+    inputs.forEach(input => {
+
+        input.value = "";
+
+        input.style.background =
+            "white";
+
+    });
+
+
+    document.getElementById(
+        "result"
+    ).innerHTML = "";
+
+}
 
 </script>
 
+
 </body>
+
 </html>
