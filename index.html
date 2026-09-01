@@ -20,7 +20,7 @@
 
         header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         header h1 {
@@ -38,7 +38,7 @@
         .main-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 30px;
+            gap: 25px;
             justify-content: center;
             max-width: 1100px;
             margin: 0 auto;
@@ -58,8 +58,8 @@
         }
 
         .tts-table td {
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             padding: 0;
             margin: 0;
             position: relative;
@@ -94,7 +94,7 @@
             position: absolute;
             top: 1px;
             left: 2px;
-            font-size: 9px;
+            font-size: 8px;
             font-weight: bold;
             color: #000;
             pointer-events: none;
@@ -186,7 +186,7 @@
             <div id="result-msg"></div>
         </div>
 
-        <!-- Pertanyaan (Sesuai Nomor Kunci Jawaban) -->
+        <!-- Pertanyaan -->
         <div class="clues-area">
             <div class="clues-section">
                 <h3>MENDATAR</h3>
@@ -213,23 +213,34 @@
     </div>
 
     <script>
-        const GRID_SIZE = 12;
+        const GRID_SIZE = 13;
 
-        // Pemetaan Presisi Koordinat Per-Huruf
+        // MATRIKS KOORDINAT PERSIMPANGAN HAKIKI:
+        // 1. STARS (H: r=0, c=0) iris JUDGEMENT di A (r=0, c=2)
+        // 2. JUDGEMENT (V: r=0, c=2)
+        // 3. PYTHON (H: r=2, c=5) iris PORTOFOLIO di O (r=2, c=9)
+        // 4. PORTOFOLIO (V: r=0, c=9) iris ETHICS di S (r=5, c=9)
+        // 5. WISDOM (H: r=6, c=0) iris DATA di D (r=6, c=3)
+        // 6. DATA (V: r=6, c=3)
+        // 7. ETHICS (H: r=5, c=8) 
+        // 8. ANALYSIS (H: r=10, c=1) iris SQL di S (r=10, c=7)
+        // 9. SQL (V: r=9, c=7) iris EXCEL di L (r=11, c=7)
+        // 10. EXCEL (H: r=11, c=3)
+        
         const dataSoal = [
-            // Mendatar
+            // Mendatar (H)
             { word: "STARS", r: 0, c: 0, dir: "H", num: 1 },
-            { word: "WISDOM", r: 4, c: 0, dir: "H", num: 2 },
-            { word: "PYTHON", r: 2, c: 4, dir: "H", num: 3 },
-            { word: "ANALYSIS", r: 8, c: 1, dir: "H", num: 5 },
-            { word: "EXCEL", r: 10, c: 5, dir: "H", num: 8 },
+            { word: "PYTHON", r: 2, c: 5, dir: "H", num: 3 },
+            { word: "WISDOM", r: 6, c: 0, dir: "H", num: 2 },
+            { word: "ANALYSIS", r: 10, c: 1, dir: "H", num: 5 },
+            { word: "EXCEL", r: 11, c: 3, dir: "H", num: 8 },
 
-            // Menurun
-            { word: "PORTOFOLIO", r: 1, c: 7, dir: "V", num: 4 },
-            { word: "ETHICS", r: 2, c: 9, dir: "V", num: 6 },
+            // Menurun (V)
             { word: "JUDGEMENT", r: 0, c: 2, dir: "V", num: 7 },
-            { word: "DATA", r: 4, c: 5, dir: "V", num: 9 },
-            { word: "SQL", r: 8, c: 6, dir: "V", num: 10 }
+            { word: "PORTOFOLIO", r: 0, c: 9, dir: "V", num: 4 },
+            { word: "ETHICS", r: 5, c: 9, dir: "V", num: 6 },
+            { word: "DATA", r: 6, c: 3, dir: "V", num: 9 },
+            { word: "SQL", r: 9, c: 7, dir: "V", num: 10 }
         ];
 
         let grid = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null));
