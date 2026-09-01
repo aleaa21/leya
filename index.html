@@ -3,279 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TTS HIMASTA UNMUL</title>
-
+    <title>Teka-Teki Silang Seminar Profesi HIMASTA UNMUL</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 30px;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
-
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
         h1 {
+            color: #2c3e50;
             text-align: center;
+            margin-bottom: 20px;
         }
-
-        .tts {
-            display: grid;
-            grid-template-columns: repeat(20, 35px);
-            gap: 2px;
-            justify-content: center;
-            margin: 30px 0;
-            overflow-x: auto;
+        .crossword-container {
+            display: inline-block;
+            background-color: #fff;
+            padding: 15px;
+            border: 2px solid #333;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
         }
-
+        .row {
+            display: flex;
+        }
         .cell {
-            width: 35px;
-            height: 35px;
-            border: 1px solid #222;
+            width: 45px;
+            height: 45px;
+            border: 1px solid #888;
             position: relative;
-            background: white;
-        }
-
-        .black {
-            background: #222;
-            border: 1px solid #222;
-        }
-
-        .cell input {
-            width: 100%;
-            height: 100%;
-            border: none;
-            text-align: center;
-            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
             font-weight: bold;
-            text-transform: uppercase;
-            outline: none;
-            background: transparent;
+            font-family: 'Courier New', Courier, monospace;
+            box-sizing: border-box;
         }
-
+        .black {
+            background-color: #000;
+            border-color: #000;
+        }
+        .white {
+            background-color: #fff;
+        }
         .number {
             position: absolute;
-            top: 1px;
-            left: 2px;
-            font-size: 9px;
-            z-index: 2;
-            pointer-events: none;
+            top: 3px;
+            left: 5px;
+            font-size: 12px;
+            font-weight: normal;
+            color: #555;
+            font-family: Arial, sans-serif;
         }
-
-        .questions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        h2 {
-            border-bottom: 2px solid #222;
-            padding-bottom: 5px;
-        }
-
-        li {
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        button {
-            display: block;
-            margin: 25px auto;
-            padding: 12px 25px;
-            border: none;
+        .clues-container {
+            width: 100%;
+            max-width: 800px;
+            background: #fff;
+            padding: 20px;
             border-radius: 8px;
-            background: #222;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
-        button:hover {
-            background: #444;
+        .clue-section {
+            margin-bottom: 20px;
         }
-
-        #hasil {
-            text-align: center;
-            font-size: 20px;
+        .clue-section h3 {
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 5px;
+            color: #2c3e50;
+        }
+        .clue-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .clue-list li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        .clue-number {
             font-weight: bold;
-            margin-top: 15px;
-        }
-
-        @media(max-width: 800px) {
-            .questions {
-                grid-template-columns: 1fr;
-            }
-
-            .tts {
-                transform: scale(0.7);
-                transform-origin: top center;
-                margin-bottom: -100px;
-            }
+            color: #e74c3c;
         }
     </style>
 </head>
-
 <body>
 
-<div class="container">
-    <h1>🧩 TEKA-TEKI SILANG</h1>
-    <p style="text-align:center;"><b>HIMASTA UNMUL</b></p>
+    <h1>TEKA-TEKI SILANG SEMINAR PROFESI</h1>
+    <h2 style="margin-top: -10px; margin-bottom: 20px; font-size: 18px; color: #666;">HIMASTA UNMUL</h2>
 
-    <div class="tts" id="tts"></div>
+    <div class="crossword-container" id="grid-container">
+        <!-- Grid akan dibuat oleh JavaScript -->
+    </div>
 
-    <button onclick="cekJawaban()">CEK JAWABAN</button>
-    <div id="hasil"></div>
-
-    <div class="questions">
-        <div>
-            <h2>MENDATAR (ACROSS)</h2>
-            <ol>
-                <li>
-                    <b>(5 Huruf)</b> Akronim dari tema seminar profesi di HIMASTA UNMUL 
-                    (<i>Statistics Towards Achievement and Responsible Success</i>).
-                </li>
-                <li value="4">
-                    <b>(10 Huruf)</b> Kumpulan rekam jejak hasil karya atau projek nyata yang perlu 
-                    dibangun mahasiswa sejak bangku kuliah (<i>Start Early</i>).
-                </li>
-                <li value="5">
-                    <b>(8 Huruf)</b> Tahapan atau proses mengolah data untuk menemukan wawasan 
-                    (<i>insight</i>), hubungan, atau pola.
-                </li>
-                <li value="7">
-                    <b>(9 Huruf)</b> Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW 
-                    (<i>What should we do?</i>).
-                </li>
-                <li value="8">
-                    <b>(5 Huruf)</b> Aplikasi <i>spreadsheet</i> mendasar yang digunakan untuk 
-                    pembersihan data dan tabel analisis.
-                </li>
-            </ol>
+    <div class="clues-container">
+        <div class="clue-section">
+            <h3>MENDATAR (ACROSS)</h3>
+            <ul class="clue-list">
+                <li><span class="clue-number">1.</span> (5 Huruf) Akronim dari tema seminar profesi di HIMASTA UNMUL (Statistics Towards Achievement and Responsible Success).</li>
+                <li><span class="clue-number">4.</span> (10 Huruf) Kumpulan rekam jejak hasil karya atau projek nyata yang perlu dibangun mahasiswa sejak bangku kuliah (Start Early).</li>
+                <li><span class="clue-number">6.</span> (6 Huruf) Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW (What should we do?).</li>
+                <li><span class="clue-number">7.</span> (8 Huruf) Tahapan atau proses mengolah data untuk menemukan wawasan (insight), hubungan, atau pola.</li>
+                <li><span class="clue-number">8.</span> (5 Huruf) Aplikasi spreadsheet mendasar yang digunakan untuk pembersihan data (data preparation) dan tabel analisis.</li>
+                <li><span class="clue-number">3.</span> (6 Huruf) Salah satu bahasa pemrograman utama yang paling sering digunakan oleh statistikawan dan data professional.</li>
+            </ul>
         </div>
 
-        <div>
-            <h2>MENURUN (DOWN)</h2>
-            <ol>
-                <li value="2">
-                    <b>(6 Huruf)</b> Pertimbangan kritis dan pemahaman konteks manusia yang 
-                    tidak dapat digantikan oleh kecerdasan buatan (AI) secara utuh.
-                </li>
-                <li value="3">
-                    <b>(6 Huruf)</b> Salah satu bahasa pemrograman utama yang paling sering 
-                    digunakan oleh statistikawan dan <i>data professional</i>.
-                </li>
-                <li value="6">
-                    <b>(6 Huruf)</b> Prinsip moral, integritas, dan objektivitas dalam pengolahan 
-                    data agar terhindar dari bias.
-                </li>
-                <li value="9">
-                    <b>(4 Huruf)</b> Bahan mentah berupa angka atau fakta yang berada di balik 
-                    setiap pertanyaan bisnis maupun kebijakan.
-                </li>
-                <li value="10">
-                    <b>(3 Huruf)</b> Bahasa kueri standar yang digunakan untuk mengelola dan 
-                    mengekstrak data dari sistem basis data (<i>database</i>).
-                </li>
-            </ol>
+        <div class="clue-section">
+            <h3>MENURUN (DOWN)</h3>
+            <ul class="clue-list">
+                <li><span class="clue-number">2.</span> (6 Huruf) Pertimbangan kritis dan pemahaman konteks manusia yang tidak dapat digantikan oleh kecerdasan buatan (AI) secara utuh.</li>
+                <li><span class="clue-number">5.</span> (4 Huruf) Bahan mentah berupa angka atau fakta yang berada di balik setiap pertanyaan bisnis maupun kebijakan.</li>
+                <li><span class="clue-number">9.</span> (3 Huruf) Bahasa kueri standar yang digunakan untuk mengelola dan mengekstrak data dari sistem basis data (database).</li>
+                <li><span class="clue-number">10.</span> (6 Huruf) Prinsip moral, integritas, dan objektivitas dalam pengolahan data agar terhindar dari bias.</li>
+            </ul>
         </div>
     </div>
-</div>
 
-<script>
-const rows = 14;
-const cols = 18;
+    <script>
+        // 1. GRID LAYOUT (PERSIS SEPERTI GAMBAR DI FILE DOCX ANDA)
+        // 1 = Kotak Putih, 0 = Kotak Hitam
+        const gridLayout = [
+            [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], // Baris 1
+            [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0], // Baris 2
+            [0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1], // Baris 3
+            [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], // Baris 4
+            [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1], // Baris 5
+            [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1], // Baris 6
+            [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1], // Baris 7
+            [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1], // Baris 8
+            [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1], // Baris 9
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // Baris 10
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]  // Baris 11
+        ];
 
-const grid = Array.from({length: rows}, () => Array(cols).fill(null));
+        // 2. DEFINISI NOMOR SOAL (Posisi [baris, kolom])
+        const numbers = {
+            '0,0': 1, '0,2': 2, '2,1': 8, '2,3': 4, '2,9': 3,
+            '5,0': 6, '5,5': 5, '9,0': 7, '9,6': 10, '10,8': 9
+        };
 
-// Koordinat yang sudah dikoreksi persimpangannya dengan presisi
-const words = {
-    1: { answer: "STARS", row: 1, col: 4, direction: "across" },
-    2: { answer: "WISDOM", row: 0, col: 7, direction: "down" },
-    3: { answer: "PYTHON", row: 3, col: 2, direction: "down" },
-    4: { answer: "PORTOFOLIO", row: 3, col: 2, direction: "across" },
-    5: { answer: "ANALYSIS", row: 5, col: 3, direction: "across" },
-    6: { answer: "ETHICS", row: 3, col: 7, direction: "down" },
-    7: { answer: "JUDGEMENT", row: 7, col: 2, direction: "across" },
-    8: { answer: "EXCEL", row: 9, col: 5, direction: "across" },
-    9: { answer: "DATA", row: 4, col: 10, direction: "down" },
-    10: { answer: "SQL", row: 6, col: 13, direction: "down" }
-};
+        // 3. KUNCI JAWABAN SESUAI FILE ANDA
+        const answers = {
+            // STARS (Mendatar, No 1)
+            '0,0': 'S', '0,1': 'T', '0,2': 'A', '0,3': 'R', '0,4': 'S',
+            // WISDOM (Menurun, No 2)
+            '1,2': 'W', '2,2': 'I', '3,2': 'S', '4,2': 'D', '5,2': 'O', '6,2': 'M',
+            // PYTHON (Mendatar, No 3)
+            '2,4': 'P', '2,5': 'Y', '2,6': 'T', '2,7': 'H', '2,8': 'O', '2,9': 'N', '2,10': 'N',
+            // PORTOFOLIO (Mendatar, No 4)
+            '2,3': 'P', '2,4': 'O', '2,5': 'R', '2,6': 'T', '2,7': 'O', '2,8': 'F', '2,9': 'O', '2,10': 'L', '3,10': 'I', '4,10': 'O',
+            // ANALYSIS (Mendatar, No 6 - Catatan: Melintasi)
+            '5,0': 'A', '5,1': 'N', '5,2': 'A', '5,3': 'L', '5,4': 'Y', '5,5': 'S', '5,6': 'I', '5,7': 'S',
+            // ETHICS (Menurun, No 10)
+            '9,6': 'E', '10,6': 'T', '11,6': 'H', '12,6': 'I', '13,6': 'C', '14,6': 'S',
+            // JUDGEMENT (Mendatar, No 7)
+            '9,0': 'J', '9,1': 'U', '9,2': 'D', '9,3': 'G', '9,4': 'E', '9,5': 'M', '9,6': 'E', '9,7': 'N', '9,8': 'T',
+            // EXCEL (Mendatar, No 8)
+            '2,1': 'E', '2,2': 'X', '2,3': 'C', '2,4': 'E', '2,5': 'L',
+            // DATA (Menurun, No 5)
+            '5,5': 'D', '6,5': 'A', '7,5': 'T', '8,5': 'A',
+            // SQL (Menurun, No 9)
+            '10,8': 'S', '11,8': 'Q', '12,8': 'L'
+        };
 
-// Masukkan kata ke grid
-for (const [number, word] of Object.entries(words)) {
-    let r = word.row;
-    let c = word.col;
+        // 4. RENDER GRID
+        const container = document.getElementById('grid-container');
 
-    for (let i = 0; i < word.answer.length; i++) {
-        if (r >= 0 && r < rows && c >= 0 && c < cols) {
-            grid[r][c] = {
-                letter: word.answer[i],
-                number: i === 0 ? number : grid[r][c]?.number || null
-            };
-        }
+        gridLayout.forEach((row, r) => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'row';
+            
+            row.forEach((cell, c) => {
+                const cellDiv = document.createElement('div');
+                cellDiv.className = 'cell';
+                
+                if (cell === 1) {
+                    cellDiv.classList.add('white');
+                    
+                    const num = numbers[`${r},${c}`];
+                    if (num) {
+                        const numSpan = document.createElement('span');
+                        numSpan.className = 'number';
+                        numSpan.innerText = num;
+                        cellDiv.appendChild(numSpan);
+                    }
 
-        if (word.direction === "across") {
-            c++;
-        } else {
-            r++;
-        }
-    }
-}
+                    const letter = answers[`${r},${c}`];
+                    if (letter) {
+                        cellDiv.innerText = letter;
+                    }
 
-// Buat tampilan TTS
-const tts = document.getElementById("tts");
-
-grid.forEach((row, r) => {
-    row.forEach((cell, c) => {
-        const box = document.createElement("div");
-
-        if (cell) {
-            box.className = "cell";
-
-            if (cell.number) {
-                const number = document.createElement("span");
-                number.className = "number";
-                number.textContent = cell.number;
-                box.appendChild(number);
-            }
-
-            const input = document.createElement("input");
-            input.maxLength = 1;
-            input.dataset.answer = cell.letter;
-            box.appendChild(input);
-        } else {
-            box.className = "cell black";
-        }
-
-        tts.appendChild(box);
-    });
-});
-
-// Cek jawaban
-function cekJawaban() {
-    const inputs = document.querySelectorAll(".cell input");
-    let benar = 0;
-    let total = inputs.length;
-
-    inputs.forEach(input => {
-        if (input.value.toUpperCase() === input.dataset.answer) {
-            benar++;
-            input.style.background = "#d4edda";
-        } else {
-            input.style.background = "#f8d7da";
-        }
-    });
-
-    document.getElementById("hasil").innerHTML = `🎯 Benar: ${benar} dari ${total} kotak`;
-}
-</script>
-
+                } else {
+                    cellDiv.classList.add('black');
+                }
+                
+                rowDiv.appendChild(cellDiv);
+            });
+            container.appendChild(rowDiv);
+        });
+    </script>
 </body>
 </html>
