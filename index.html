@@ -1,905 +1,125 @@
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Teka Teki Silang - Seminar Profesi</title>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            color: #222;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 35px 20px 60px;
-            text-align: center;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 32px;
-            font-weight: 700;
-        }
-
-        .subtitle {
-            margin-top: 8px;
-            margin-bottom: 30px;
-            color: #666;
-        }
-
-
-        /* =========================
-           CROSSWORD GRID
-        ========================= */
-
-        .grid-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            padding: 15px 0 25px;
-        }
-
-        #crossword {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(12, 48px);
-
-            grid-template-rows:
-                repeat(13, 48px);
-
-            gap: 2px;
-
-            background: #111;
-
-            padding: 5px;
-
-            width: max-content;
-
-            margin: auto;
-
-            border-radius: 5px;
-        }
-
-
-        .cell {
-
-            width: 48px;
-            height: 48px;
-
-            background: white;
-
-            position: relative;
-        }
-
-
-        .black {
-
-            background: #111;
-        }
-
-
-        .cell input {
-
-            width: 100%;
-            height: 100%;
-
-            border: none;
-            outline: none;
-
-            background: white;
-
-            text-align: center;
-
-            font-size: 21px;
-
-            font-weight: bold;
-
-            text-transform: uppercase;
-
-            padding-top: 5px;
-
-        }
-
-
-        .cell input:focus {
-
-            background: #eaf3ff;
-
-        }
-
-
-        .number {
-
-            position: absolute;
-
-            top: 3px;
-            left: 4px;
-
-            font-size: 11px;
-
-            font-weight: bold;
-
-            color: #111;
-
-            z-index: 5;
-
-            pointer-events: none;
-
-        }
-
-
-        /* =========================
-           BUTTON
-        ========================= */
-
-        .buttons {
-
-            margin: 20px 0;
-
-        }
-
-
-        button {
-
-            padding: 12px 25px;
-
-            margin: 5px;
-
-            border: none;
-
-            border-radius: 8px;
-
-            cursor: pointer;
-
-            font-size: 15px;
-
-            font-weight: bold;
-
-        }
-
-
-        .check {
-
-            background: #222;
-
-            color: white;
-
-        }
-
-
-        .reset {
-
-            background: #ddd;
-
-            color: #222;
-
-        }
-
-
-        button:hover {
-
-            opacity: 0.85;
-
-        }
-
-
-        #result {
-
-            min-height: 25px;
-
-            margin: 15px;
-
-            font-size: 16px;
-
-            font-weight: bold;
-
-        }
-
-
-        /* =========================
-           PETUNJUK
-        ========================= */
-
-        .clues {
-
-            display: grid;
-
-            grid-template-columns: 1fr 1fr;
-
-            gap: 25px;
-
-            margin-top: 30px;
-
-            text-align: left;
-
-        }
-
-
-        .clue-box {
-
-            background: white;
-
-            padding: 25px;
-
-            border-radius: 12px;
-
-            box-shadow:
-                0 4px 12px rgba(0,0,0,0.08);
-
-        }
-
-
-        .clue-box h2 {
-
-            margin-top: 0;
-
-            padding-bottom: 10px;
-
-            border-bottom: 1px solid #ddd;
-
-        }
-
-
-        .clue-box p {
-
-            line-height: 1.6;
-
-            margin: 13px 0;
-
-        }
-
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
-        @media (max-width: 700px) {
-
-            .clues {
-
-                grid-template-columns: 1fr;
-
-            }
-
-            h1 {
-
-                font-size: 25px;
-
-            }
-
-        }
-
-    </style>
-
-</head>
-
-
-<body>
-
-
-<div class="container">
-
-
-    <h1>
-        TEKA TEKI SILANG
-    </h1>
-
-
-    <div class="subtitle">
-        SEMINAR PROFESI HIMASTA UNMUL
-    </div>
-
-
-    <!-- =========================
-         GRID
-    ========================== -->
-
-    <div class="grid-wrapper">
-
-        <div id="crossword"></div>
-
-    </div>
-
-
-    <!-- =========================
-         BUTTON
-    ========================== -->
-
-    <div class="buttons">
-
-        <button
-            class="check"
-            onclick="checkAnswers()">
-
-            ✓ CEK JAWABAN
-
-        </button>
-
-
-        <button
-            class="reset"
-            onclick="resetGame()">
-
-            ↻ RESET
-
-        </button>
-
-    </div>
-
-
-    <div id="result"></div>
-
-
-
-    <!-- =========================
-         PETUNJUK
-    ========================== -->
-
-    <div class="clues">
-
-
-        <div class="clue-box">
-
-            <h2>
-                📝 PETUNJUK
-            </h2>
-
-
-            <p>
-                <b>1.</b>
-                Akronim dari tema seminar profesi
-                <i>Statistics Towards Achievement
-                and Responsible Success.</i>
-            </p>
-
-
-            <p>
-                <b>2.</b>
-                Pertimbangan kritis dan pemahaman
-                konteks manusia yang tidak dapat
-                digantikan oleh AI secara utuh.
-            </p>
-
-
-            <p>
-                <b>3.</b>
-                Bahasa pemrograman yang banyak
-                digunakan dalam pengolahan dan
-                analisis data.
-            </p>
-
-
-            <p>
-                <b>4.</b>
-                Kumpulan rekam jejak hasil karya
-                atau proyek nyata yang dibangun
-                mahasiswa.
-            </p>
-
-
-            <p>
-                <b>5.</b>
-                Proses mengolah data untuk menemukan
-                wawasan, hubungan, atau pola.
-            </p>
-
-        </div>
-
-
-
-        <div class="clue-box">
-
-            <h2>
-                📝 PETUNJUK
-            </h2>
-
-
-            <p>
-                <b>6.</b>
-                Tingkat keputusan tertinggi dalam
-                kerangka kerja DIKW
-                (<i>What should we do?</i>).
-            </p>
-
-
-            <p>
-                <b>7.</b>
-                Prinsip moral, integritas, dan
-                objektivitas dalam pengolahan data
-                agar terhindar dari bias.
-            </p>
-
-
-            <p>
-                <b>8.</b>
-                Aplikasi spreadsheet yang digunakan
-                untuk pembersihan data dan tabel
-                analisis.
-            </p>
-
-
-            <p>
-                <b>9.</b>
-                Bahan mentah berupa angka atau fakta
-                yang menjadi dasar analisis.
-            </p>
-
-
-            <p>
-                <b>10.</b>
-                Bahasa kueri standar yang digunakan
-                untuk mengelola dan mengekstrak data
-                dari database.
-            </p>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-<script>
-
-
-/* =====================================================
-   KUNCI JAWABAN
-===================================================== */
-
-const answers = {
-
+# ==========================================
+# TEKA-TEKI SILANG (TTS) HIMASTA UNMUL
+# Tema: Statistics Towards Achievement
+#       and Responsible Success
+# ==========================================
+
+# Kunci jawaban
+answers = {
     1: "STARS",
-
     2: "WISDOM",
-
-    3: "PYTHON",
-
-    4: "PORTFOLIO",
-
-    5: "ANALYSIS",
-
+    3: "ETHICS",
+    4: "PYTHON",
+    5: "DATA",
     6: "JUDGEMENT",
-
-    7: "ETHICS",
-
-    8: "EXCEL",
-
-    9: "DATA",
-
+    7: "ANALYSIS",
+    8: "PORTOFOLIO",
+    9: "EXCEL",
     10: "SQL"
+}
 
-};
+# Soal MENDATAR
+across = {
+    1: "Akronim dari tema seminar profesi di HIMASTA UNMUL.",
+    4: "Salah satu bahasa pemrograman utama yang paling sering digunakan oleh statistikawan dan data professional.",
+    6: "Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW.",
+    7: "Tahapan atau proses mengolah data untuk menemukan insight, hubungan, atau pola.",
+    9: "Aplikasi spreadsheet mendasar yang digunakan untuk pembersihan data dan tabel analisis."
+}
 
-
-
-/* =====================================================
-   POSISI KATA
-
-   H = Horizontal
-   V = Vertical
-
-   row dan col dimulai dari 0
-===================================================== */
-
-const positions = {
-
-    /* 1 = STARS */
-    1: {
-        row: 5,
-        col: 8,
-        direction: "V"
-    },
-
-
-    /* 2 = WISDOM */
-    2: {
-        row: 5,
-        col: 6,
-        direction: "H"
-    },
-
-
-    /* 3 = PYTHON */
-    3: {
-        row: 10,
-        col: 4,
-        direction: "H"
-    },
-
-
-    /* 4 = PORTFOLIO */
-    4: {
-        row: 4,
-        col: 10,
-        direction: "V"
-    },
-
-
-    /* 5 = ANALYSIS */
-    5: {
-        row: 7,
-        col: 0,
-        direction: "H"
-    },
-
-
-    /* 6 = JUDGEMENT */
-    6: {
-        row: 3,
-        col: 9,
-        direction: "V"
-    },
-
-
-    /* 7 = ETHICS */
-    7: {
-        row: 2,
-        col: 7,
-        direction: "V"
-    },
-
-
-    /* 8 = EXCEL */
-    8: {
-        row: 2,
-        col: 7,
-        direction: "H"
-    },
-
-
-    /* 9 = DATA */
-    9: {
-        row: 3,
-        col: 5,
-        direction: "H"
-    },
-
-
-    /* 10 = SQL */
-    10: {
-        row: 0,
-        col: 11,
-        direction: "V"
-    }
-
-};
-
-
-
-/* =====================================================
-   UKURAN GRID
-===================================================== */
-
-const rows = 13;
-
-const cols = 12;
-
-
-
-/* =====================================================
-   MEMBUAT GRID HITAM
-===================================================== */
-
-const crossword =
-    document.getElementById("crossword");
-
-
-let cells = [];
-
-
-for (let r = 0; r < rows; r++) {
-
-    cells[r] = [];
-
-    for (let c = 0; c < cols; c++) {
-
-        const cell =
-            document.createElement("div");
-
-        cell.classList.add("cell");
-
-        cell.classList.add("black");
-
-        crossword.appendChild(cell);
-
-        cells[r][c] = cell;
-
-    }
-
+# Soal MENURUN
+down = {
+    2: "Pertimbangan kritis dan pemahaman konteks manusia yang tidak dapat digantikan oleh AI secara utuh.",
+    3: "Prinsip moral, integritas, dan objektivitas dalam pengolahan data agar terhindar dari bias.",
+    5: "Bahan mentah berupa angka atau fakta yang berada di balik setiap pertanyaan bisnis maupun kebijakan.",
+    8: "Kumpulan rekam jejak hasil karya atau projek nyata yang perlu dibangun mahasiswa sejak bangku kuliah.",
+    10: "Bahasa kueri standar yang digunakan untuk mengelola dan mengekstrak data dari sistem basis data."
 }
 
 
+# ==========================================
+# FUNGSI MENAMPILKAN SOAL
+# ==========================================
 
-/* =====================================================
-   MENEMPATKAN KATA
-===================================================== */
+def tampilkan_soal():
+    print("=" * 60)
+    print("        TEKA-TEKI SILANG HIMASTA UNMUL")
+    print("=" * 60)
 
-Object.keys(positions).forEach(number => {
+    print("\nMENDATAR (ACROSS)")
+    print("-" * 60)
 
+    for nomor, soal in across.items():
+        print(f"{nomor}. {soal}")
 
-    const word =
-        answers[number];
+    print("\nMENURUN (DOWN)")
+    print("-" * 60)
 
+    for nomor, soal in down.items():
+        print(f"{nomor}. {soal}")
 
-    const pos =
-        positions[number];
 
+# ==========================================
+# FUNGSI MENGERJAKAN TTS
+# ==========================================
 
-    for (let i = 0; i < word.length; i++) {
+def mulai_tts():
+    skor = 0
 
+    print("\n" + "=" * 60)
+    print("             MULAI MENGERJAKAN TTS")
+    print("=" * 60)
+    print("Masukkan jawaban tanpa spasi.")
+    print("Contoh: Python → PYTHON\n")
 
-        let r =
-            pos.row;
+    for nomor in range(1, 11):
 
+        if nomor in across:
+            soal = across[nomor]
+            arah = "MENDATAR"
 
-        let c =
-            pos.col;
+        else:
+            soal = down[nomor]
+            arah = "MENURUN"
 
+        print(f"\n{nomor}. [{arah}]")
+        print(soal)
 
-        if (pos.direction === "H") {
+        jawaban = input("Jawaban: ").strip().upper()
 
-            c += i;
+        if jawaban == answers[nomor]:
+            print("✅ BENAR!")
+            skor += 1
+        else:
+            print("❌ SALAH!")
+            print(f"Jawaban yang benar: {answers[nomor]}")
 
-        }
+    print("\n" + "=" * 60)
+    print("                 HASIL TTS")
+    print("=" * 60)
 
-        else {
+    print(f"Skor kamu: {skor}/10")
 
-            r += i;
+    if skor == 10:
+        print("🔥 SEMPURNA! Kamu siap jadi data professional!")
+    elif skor >= 8:
+        print("🎉 KEREN! Tinggal sedikit lagi menuju sempurna!")
+    elif skor >= 5:
+        print("👍 Lumayan! Yuk pelajari lagi istilah-istilahnya!")
+    else:
+        print("📚 Semangat belajar! Jangan menyerah!")
 
-        }
 
+# ==========================================
+# PROGRAM UTAMA
+# ==========================================
 
-        const cell =
-            cells[r][c];
+if __name__ == "__main__":
+    tampilkan_soal()
 
+    mulai = input("\nApakah kamu siap mengerjakan TTS? (y/n): ")
 
-        cell.classList.remove("black");
-
-
-        let input =
-            cell.querySelector("input");
-
-
-        /*
-        Kalau kotak merupakan
-        perpotongan dua kata,
-        gunakan input yang sama.
-        */
-
-        if (!input) {
-
-            input =
-                document.createElement("input");
-
-
-            input.maxLength = 1;
-
-
-            cell.appendChild(input);
-
-        }
-
-
-        /*
-        Simpan huruf jawaban
-        untuk kotak tersebut.
-        */
-
-        if (!input.dataset.answers) {
-
-            input.dataset.answers = "";
-
-        }
-
-
-        input.dataset.answers +=
-            word[i];
-
-
-        input.addEventListener(
-            "input",
-            function () {
-
-                this.value =
-                    this.value
-                    .toUpperCase()
-                    .replace(/[^A-Z]/g, "");
-
-            }
-        );
-
-    }
-
-
-
-    /* =================================================
-       NOMOR
-    ================================================= */
-
-    const startCell =
-        cells[pos.row][pos.col];
-
-
-    /*
-       Hindari nomor ganda
-    */
-
-    if (!startCell.querySelector(".number")) {
-
-        const label =
-            document.createElement("span");
-
-        label.classList.add("number");
-
-        label.innerText =
-            number;
-
-        startCell.appendChild(label);
-
-    }
-
-});
-
-
-
-/* =====================================================
-   CEK JAWABAN
-===================================================== */
-
-function checkAnswers() {
-
-
-    const inputs =
-        document.querySelectorAll(
-            "#crossword input"
-        );
-
-
-    let correct = 0;
-
-    let total = inputs.length;
-
-
-    inputs.forEach(input => {
-
-
-        const user =
-            input.value.toUpperCase();
-
-
-        /*
-        Kotak yang berpotongan
-        harus mempunyai satu huruf
-        yang sama.
-        */
-
-        const possible =
-            input.dataset.answers
-            .split("");
-
-
-        if (
-            user !== "" &&
-            possible.includes(user)
-        ) {
-
-            /*
-            Untuk kotak perpotongan,
-            huruf harus sama dengan
-            seluruh jawaban yang
-            melewati kotak tersebut.
-            */
-
-            const allSame =
-                possible.every(
-                    letter =>
-                        letter === user
-                );
-
-
-            if (allSame) {
-
-                input.style.background =
-                    "#d4edda";
-
-                correct++;
-
-            }
-
-            else {
-
-                input.style.background =
-                    "#f8d7da";
-
-            }
-
-        }
-
-        else {
-
-            input.style.background =
-                "#f8d7da";
-
-        }
-
-    });
-
-
-    const result =
-        document.getElementById("result");
-
-
-    if (correct === total) {
-
-        result.innerHTML =
-            "🎉 SELAMAT! SEMUA JAWABAN BENAR!";
-
-        result.style.color =
-            "green";
-
-    }
-
-    else {
-
-        result.innerHTML =
-            `Jawaban benar: ${correct} dari ${total} kotak.`;
-
-        result.style.color =
-            "#333";
-
-    }
-
-}
-
-
-
-/* =====================================================
-   RESET
-===================================================== */
-
-function resetGame() {
-
-
-    const inputs =
-        document.querySelectorAll(
-            "#crossword input"
-        );
-
-
-    inputs.forEach(input => {
-
-        input.value = "";
-
-        input.style.background =
-            "white";
-
-    });
-
-
-    document.getElementById(
-        "result"
-    ).innerHTML = "";
-
-}
-
-</script>
-
-
-</body>
-
-</html>
+    if mulai.lower() == "y":
+        mulai_tts()
+    else:
+        print("\nTTS dibatalkan. Semangat! ✨")
