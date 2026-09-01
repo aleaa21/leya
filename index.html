@@ -58,6 +58,7 @@
             text-transform: uppercase;
             outline: none;
             background: transparent;
+            padding: 0;
         }
 
         .number {
@@ -209,19 +210,32 @@
 const rows = 16;
 const cols = 20;
 
-// Definisi kata dengan koordinat yang akurat (0-based index)
-// Berdasarkan gambar TTS
+// KOORDINAT YANG AKURAT (0-based index)
+// Berdasarkan gambar: 
+// Baris 0: [1]S T A R S [2]S ...
+// Maka:
+// - STARS: mulai di (0,1) karena nomor 1 ada di kolom 0, lalu S di kolom 1
+// - WISDOM: mulai di (0,6) karena nomor 2 ada di kolom 5, lalu S di kolom 6
+// - PORTOFOLIO: mulai di (2,4)
+// - PYTHON: mulai di (2,4) ke bawah
+// - ANALYSIS: mulai di (5,3)
+// - ETHICS: mulai di (5,8) ke bawah
+// - JUDGEMENT: mulai di (7,3)
+// - EXCEL: mulai di (9,6)
+// - DATA: mulai di (5,10) ke bawah
+// - SQL: mulai di (8,11) ke bawah
+
 const words = {
-    1: { answer: "STARS", row: 0, col: 3, direction: "across" },      // baris 1, kolom 4
-    2: { answer: "WISDOM", row: 0, col: 7, direction: "down" },       // baris 1, kolom 8
-    3: { answer: "PYTHON", row: 2, col: 4, direction: "down" },       // baris 3, kolom 5
-    4: { answer: "PORTOFOLIO", row: 2, col: 4, direction: "across" }, // baris 3, kolom 5
-    5: { answer: "ANALYSIS", row: 5, col: 3, direction: "across" },   // baris 6, kolom 4
-    6: { answer: "ETHICS", row: 5, col: 8, direction: "down" },       // baris 6, kolom 9
-    7: { answer: "JUDGEMENT", row: 7, col: 3, direction: "across" },  // baris 8, kolom 4
-    8: { answer: "EXCEL", row: 9, col: 6, direction: "across" },      // baris 10, kolom 7
-    9: { answer: "DATA", row: 5, col: 10, direction: "down" },        // baris 6, kolom 11
-    10: { answer: "SQL", row: 8, col: 11, direction: "down" }         // baris 9, kolom 12
+    1: { answer: "STARS", row: 0, col: 1, direction: "across" },
+    2: { answer: "WISDOM", row: 0, col: 6, direction: "down" },
+    3: { answer: "PYTHON", row: 2, col: 4, direction: "down" },
+    4: { answer: "PORTOFOLIO", row: 2, col: 4, direction: "across" },
+    5: { answer: "ANALYSIS", row: 5, col: 3, direction: "across" },
+    6: { answer: "ETHICS", row: 5, col: 8, direction: "down" },
+    7: { answer: "JUDGEMENT", row: 7, col: 3, direction: "across" },
+    8: { answer: "EXCEL", row: 9, col: 6, direction: "across" },
+    9: { answer: "DATA", row: 5, col: 10, direction: "down" },
+    10: { answer: "SQL", row: 8, col: 11, direction: "down" }
 };
 
 // Buat grid kosong
@@ -236,8 +250,9 @@ function fillCell(r, c, letter, number, isFirst) {
     } else if (!grid[r][c].letter) {
         grid[r][c].letter = letter;
     } else if (grid[r][c].letter !== letter) {
-        // Konflik - ini seharusnya tidak terjadi jika koordinat benar
-        console.warn(`Konflik di (${r},${c}): ${grid[r][c].letter} vs ${letter}`);
+        // Jika ada konflik, biarkan huruf yang sudah ada (prioritas pertama)
+        console.warn(`Konflik di (${r},${c}): ${grid[r][c].letter} vs ${letter} - menggunakan ${grid[r][c].letter}`);
+        return;
     }
     
     if (isFirst) {
@@ -297,14 +312,12 @@ for (let r = 0; r < rows; r++) {
 function cekJawaban() {
     const inputs = document.querySelectorAll(".cell input");
     let benar = 0;
-    let total = 0;
+    let total = inputs.length;
     
     inputs.forEach(input => {
-        total++;
         const userAnswer = input.value.toUpperCase().trim();
         const correctAnswer = input.dataset.answer.toUpperCase();
         
-        // Hapus class sebelumnya
         input.classList.remove('correct', 'wrong', 'empty');
         
         if (userAnswer === correctAnswer) {
@@ -322,12 +335,12 @@ function cekJawaban() {
         hasil.innerHTML = `🎉 SELAMAT! Semua jawaban benar (${benar}/${total})! 🎉`;
         hasil.style.color = "#28a745";
     } else {
-        hasil.innerHTML = `🎯 Benar: ${benar} dari ${total} kotak terisi`;
+        hasil.innerHTML = `🎯 Benar: ${benar} dari ${total} kotak`;
         hasil.style.color = "#222";
     }
 }
 
-// Tambahkan shortcut Enter
+// Shortcut Enter
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
         const active = document.activeElement;
