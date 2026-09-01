@@ -194,16 +194,16 @@ const cols = 20;
 
 const grid = Array.from({length: rows}, () => Array(cols).fill(null));
 
-// Koordinat yang sudah digeser agar semua nomor 1-10 pas dan tidak ada yang terpotong
+// Koordinat fix yang akurat dan saling terhubung
 const words = {
     1: { answer: "STARS", row: 1, col: 4, direction: "across" },
-    2: { answer: "WISDOM", row: 0, col: 7, direction: "down" },
+    2: { answer: "WISDOM", row: 0, col: 8, direction: "down" },
     3: { answer: "PYTHON", row: 3, col: 3, direction: "down" },
     4: { answer: "PORTOFOLIO", row: 5, col: 2, direction: "across" },
     5: { answer: "ANALYSIS", row: 7, col: 4, direction: "across" },
     6: { answer: "ETHICS", row: 3, col: 10, direction: "down" },
     7: { answer: "JUDGEMENT", row: 9, col: 2, direction: "across" },
-    8: { answer: "EXCEL", row: 11, col: 6, direction: "across" },
+    8: { answer: "EXCEL", row: 11, col: 7, direction: "across" },
     9: { answer: "DATA", row: 6, col: 12, direction: "down" },
     10: { answer: "SQL", row: 8, col: 15, direction: "down" }
 };
