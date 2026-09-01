@@ -66,7 +66,6 @@
             background-color: #fff;
             text-align: center;
             vertical-align: middle;
-            /* GARIS PEMBATAS ANTAR KOTAK */
             border: 1px solid #94a3b8;
         }
 
@@ -193,20 +192,20 @@
                 <h3>MENDATAR</h3>
                 <ul>
                     <li><strong>1.</strong> Akronim dari tema seminar profesi di HIMASTA UNMUL (Statistics Towards Achievement and Responsible Success).</li>
-                    <li><strong>4.</strong> Salah satu bahasa pemrograman utama yang paling sering digunakan oleh statistikawan dan data professional.</li>
-                    <li><strong>6.</strong> Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW (What should we do?).</li>
-                    <li><strong>7.</strong> Tahapan atau proses mengolah data untuk menemukan wawasan (insight), hubungan, atau pola.</li>
-                    <li><strong>9.</strong> Aplikasi spreadsheet mendasar yang digunakan untuk pembersihan data (data preparation) dan tabel analisis.</li>
+                    <li><strong>2.</strong> Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW (What should we do?).</li>
+                    <li><strong>3.</strong> Salah satu bahasa pemrograman utama yang paling sering digunakan oleh statistikawan dan data professional.</li>
+                    <li><strong>5.</strong> Tahapan atau proses mengolah data untuk menemukan wawasan (insight), hubungan, atau pola.</li>
+                    <li><strong>8.</strong> Aplikasi spreadsheet mendasar yang digunakan untuk pembersihan data (data preparation) dan tabel analisis.</li>
                 </ul>
             </div>
 
             <div class="clues-section">
                 <h3>MENURUN</h3>
                 <ul>
-                    <li><strong>2.</strong> Pertimbangan kritis dan pemahaman konteks manusia yang tidak dapat digantikan oleh kecerdasan buatan (AI) secara utuh.</li>
-                    <li><strong>3.</strong> Prinsip moral, integritas, dan objektivitas dalam pengolahan data agar terhindar dari bias.</li>
-                    <li><strong>5.</strong> Bahan mentah berupa angka atau fakta yang berada di balik setiap pertanyaan bisnis maupun kebijakan.</li>
-                    <li><strong>8.</strong> Kumpulan rekam jejak hasil karya atau projek nyata yang perlu dibangun mahasiswa sejak bangku kuliah (Start Early).</li>
+                    <li><strong>4.</strong> Kumpulan rekam jejak hasil karya atau projek nyata yang perlu dibangun mahasiswa sejak bangku kuliah (Start Early).</li>
+                    <li><strong>6.</strong> Prinsip moral, integritas, dan objektivitas dalam pengolahan data agar terhindar dari bias.</li>
+                    <li><strong>7.</strong> Pertimbangan kritis dan pemahaman konteks manusia yang tidak dapat digantikan oleh kecerdasan buatan (AI) secara utuh.</li>
+                    <li><strong>9.</strong> Bahan mentah berupa angka atau fakta yang berada di balik setiap pertanyaan bisnis maupun kebijakan.</li>
                     <li><strong>10.</strong> Bahasa kueri standar yang digunakan untuk mengelola dan mengekstrak data dari sistem basis data (database).</li>
                 </ul>
             </div>
@@ -216,19 +215,20 @@
     <script>
         const GRID_SIZE = 12;
 
+        // Data posisi & penomoran yang disesuaikan presisi
         const dataSoal = [
             // Mendatar
             { word: "STARS", r: 0, c: 0, dir: "H", num: 1 },
-            { word: "PYTHON", r: 2, c: 4, dir: "H", num: 4 },
-            { word: "WISDOM", r: 4, c: 0, dir: "H", num: 6 },
-            { word: "ANALYSIS", r: 8, c: 1, dir: "H", num: 7 },
-            { word: "EXCEL", r: 10, c: 5, dir: "H", num: 9 },
+            { word: "WISDOM", r: 4, c: 0, dir: "H", num: 2 },
+            { word: "PYTHON", r: 2, c: 4, dir: "H", num: 3 },
+            { word: "ANALYSIS", r: 8, c: 1, dir: "H", num: 5 },
+            { word: "EXCEL", r: 10, c: 5, dir: "H", num: 8 },
 
             // Menurun
-            { word: "JUDGEMENT", r: 0, c: 2, dir: "V", num: 2 },
-            { word: "ETHICS", r: 2, c: 9, dir: "V", num: 3 },
-            { word: "DATA", r: 4, c: 5, dir: "V", num: 5 },
-            { word: "PORTOFOLIO", r: 1, c: 7, dir: "V", num: 8 },
+            { word: "PORTOFOLIO", r: 1, c: 7, dir: "V", num: 4 },
+            { word: "ETHICS", r: 2, c: 9, dir: "V", num: 6 },
+            { word: "JUDGEMENT", r: 0, c: 2, dir: "V", num: 7 },
+            { word: "DATA", r: 4, c: 5, dir: "V", num: 9 },
             { word: "SQL", r: 8, c: 6, dir: "V", num: 10 }
         ];
 
