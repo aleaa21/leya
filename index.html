@@ -2,27 +2,143 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>TTS HIMASTA UNMUL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teka-Teki Silang HIMASTA UNMUL</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
-        h2 { color: #2c3e50; }
-        .grid-container { display: inline-block; border: 2px solid #333; background-color: #fff; }
-        .grid-row { display: flex; }
-        .cell { width: 40px; height: 40px; border: 1px solid #999; display: flex; align-items: center; justify-content: center; position: relative; font-size: 20px; font-weight: bold; }
-        .black { background-color: #000; }
-        .white { background-color: #fff; }
-        .number { position: absolute; top: 2px; left: 3px; font-size: 10px; font-weight: normal; color: #333; }
-        .highlight { background-color: #ffff00; } /* Untuk menunjukkan titik potong S */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        h2 {
+            color: #555;
+            text-align: center;
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .crossword-container {
+            display: inline-block;
+            background-color: #fff;
+            padding: 10px;
+            border: 2px solid #333;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+        }
+        .row {
+            display: flex;
+        }
+        .cell {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #888;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            box-sizing: border-box;
+        }
+        .black {
+            background-color: #000;
+            border-color: #000;
+        }
+        .white {
+            background-color: #fff;
+        }
+        .number {
+            position: absolute;
+            top: 2px;
+            left: 3px;
+            font-size: 10px;
+            font-weight: normal;
+            color: #555;
+            font-family: Arial, sans-serif;
+        }
+        .highlight {
+            background-color: #ffff00; /* Untuk huruf S yang berpotongan */
+        }
+        .clues-container {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 800px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .clue-section {
+            margin-bottom: 20px;
+        }
+        .clue-section h3 {
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 5px;
+            color: #2c3e50;
+        }
+        .clue-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .clue-list li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .clue-number {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .answer-text {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #27ae60;
+        }
     </style>
 </head>
 <body>
-    <h2>TEKA-TEKI SILANG HIMASTA UNMUL</h2>
-    <div class="grid-container" id="crossword">
-        <!-- Grid akan dibuat oleh JavaScript di bawah -->
+
+    <h1>TEKA-TEKI SILANG</h1>
+    <h2>HIMASTA UNMUL</h2>
+
+    <div class="crossword-container" id="grid-container">
+        <!-- Grid akan dibuat oleh JavaScript -->
+    </div>
+
+    <div class="clues-container">
+        <div class="clue-section">
+            <h3>MENDATAR (Across)</h3>
+            <ul class="clue-list">
+                <li><span class="clue-number">1.</span> Benda langit yang tampak berkelip di langit malam. (English: Stars)</li>
+                <li><span class="clue-number">3.</span> Bahasa pemrograman tingkat tinggi yang sering dipakai untuk Data Science dan Machine Learning.</li>
+                <li><span class="clue-number">4.</span> Dokumen atau kumpulan karya yang digunakan untuk menunjukkan kemampuan dan pengalaman kerja seseorang.</li>
+                <li><span class="clue-number">5.</span> Proses memeriksa, memecahkan, dan menginterpretasikan data untuk menarik kesimpulan. (English: Analysis)</li>
+                <li><span class="clue-number">7.</span> Proses mental untuk menilai situasi dan membuat keputusan yang bijaksana. (English: Judgement)</li>
+                <li><span class="clue-number">8.</span> Aplikasi pengolah angka (spreadsheet) besutan Microsoft yang sering digunakan untuk mengolah data statistik.</li>
+            </ul>
+        </div>
+
+        <div class="clue-section">
+            <h3>MENURUN (Down)</h3>
+            <ul class="clue-list">
+                <li><span class="clue-number">2.</span> Kebijaksanaan mendalam atau pengetahuan teoritis yang diperoleh dari pengalaman dan pembelajaran. (English: Wisdom)</li>
+                <li><span class="clue-number">6.</span> Prinsip moral atau nilai-nilai yang menjadi pedoman perilaku seseorang atau suatu profesi.</li>
+                <li><span class="clue-number">9.</span> Kumpulan fakta, angka, atau informasi mentah yang akan diolah menjadi informasi.</li>
+                <li><span class="clue-number">10.</span> Bahasa pemrograman standar yang digunakan untuk mengakses dan mengelola database relasional.</li>
+            </ul>
+        </div>
     </div>
 
     <script>
-        const gridData = [
+        // 1. Definisi Grid (1 = Putih, 0 = Hitam) - PERSIS SEPERTI GAMBAR ANDA
+        const gridLayout = [
             [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -36,25 +152,45 @@
             [1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0]
         ];
 
-        // Kunci Jawaban untuk verifikasi visual
-        const answers = {
-            '0-0': 'S', '0-1': 'T', '0-2': 'A', '0-3': 'R', '0-4': 'S', // STARS
-            '1-0': 'W', '2-0': 'I', '3-0': 'S', '4-0': 'D', '5-0': 'O', '6-0': 'M', // WISDOM
-            '2-1': 'P', '2-2': 'O', '2-3': 'R', '2-4': 'T', '2-5': 'O', '2-6': 'F', '2-7': 'O', '2-8': 'L', '2-9': 'I', '2-10': 'O', // PORTOFOLIO
-            '2-4': 'T', '2-5': 'H', '2-6': 'Y', '2-7': 'T', '2-8': 'H', '2-9': 'O', '2-10': 'N', // PYTHON
-            '6-0': 'A', '6-1': 'N', '6-2': 'A', '6-3': 'L', '6-4': 'Y', '6-5': 'S', '6-6': 'I', '6-7': 'S', // ANALYSIS
-            '8-0': 'J', '8-1': 'U', '8-2': 'D', '8-3': 'G', '8-4': 'E', '8-5': 'M', '8-6': 'E', '8-7': 'N', '8-8': 'T', // JUDGEMENT
-            '10-0': 'E', '10-1': 'X', '10-2': 'C', '10-3': 'E', '10-4': 'L', // EXCEL
-            '3-1': 'E', '4-1': 'T', '5-1': 'H', '6-1': 'I', '7-1': 'C', '8-1': 'S', // ETHICS
-            '6-7': 'D', '7-7': 'A', '8-7': 'T', '9-7': 'A', // DATA
-            '8-8': 'S', '9-8': 'Q', '10-8': 'L' // SQL
+        // 2. Definisi Nomor Soal (Posisi [baris, kolom])
+        const numbers = {
+            '0,0': 1, '0,5': 2, // Baris 1
+            '2,0': 4, '2,4': 3, // Baris 3
+            '6,0': 5, '6,7': 9, // Baris 7
+            '8,0': 7, '8,8': 10, // Baris 9
+            '10,0': 8 // Baris 11
         };
 
-        const container = document.getElementById('crossword');
-        
-        gridData.forEach((row, r) => {
+        // 3. Kunci Jawaban (Untuk Verifikasi/Highlight)
+        const answers = {
+            // STARS (Mendatar Baris 1)
+            '0,0': 'S', '0,1': 'T', '0,2': 'A', '0,3': 'R', '0,4': 'S',
+            // WISDOM (Menurun Kolom 1)
+            '1,0': 'W', '2,0': 'I', '3,0': 'S', '4,0': 'D', '5,0': 'O', '6,0': 'M',
+            // PORTOFOLIO (Mendatar Baris 3)
+            '2,1': 'P', '2,2': 'O', '2,3': 'R', '2,5': 'O', '2,6': 'F', '2,7': 'O', '2,8': 'L', '2,9': 'I', '2,10': 'O',
+            // PYTHON (Mendatar Baris 3)
+            '2,4': 'T', '2,5': 'H', '2,6': 'Y', '2,7': 'T', '2,8': 'H', '2,9': 'O', '2,10': 'N',
+            // ETHICS (Menurun Kolom 2)
+            '3,1': 'E', '4,1': 'T', '5,1': 'H', '6,1': 'I', '7,1': 'C', '8,1': 'S',
+            // ANALYSIS (Mendatar Baris 7)
+            '6,0': 'A', '6,1': 'N', '6,2': 'A', '6,3': 'L', '6,4': 'Y', '6,5': 'S', '6,6': 'I', '6,7': 'S',
+            // DATA (Menurun Kolom 9)
+            '6,7': 'D', '7,7': 'A', '8,7': 'T', '9,7': 'A',
+            // JUDGEMENT (Mendatar Baris 9)
+            '8,0': 'J', '8,1': 'U', '8,2': 'D', '8,3': 'G', '8,4': 'E', '8,5': 'M', '8,6': 'E', '8,7': 'N', '8,8': 'T',
+            // SQL (Menurun Kolom 10)
+            '8,8': 'S', '9,8': 'Q', '10,8': 'L',
+            // EXCEL (Mendatar Baris 11)
+            '10,0': 'E', '10,1': 'X', '10,2': 'C', '10,3': 'E', '10,4': 'L'
+        };
+
+        // 4. Render Grid ke HTML
+        const container = document.getElementById('grid-container');
+
+        gridLayout.forEach((row, r) => {
             const rowDiv = document.createElement('div');
-            rowDiv.className = 'grid-row';
+            rowDiv.className = 'row';
             
             row.forEach((cell, c) => {
                 const cellDiv = document.createElement('div');
@@ -62,14 +198,27 @@
                 
                 if (cell === 1) {
                     cellDiv.classList.add('white');
-                    if (answers[`${r}-${c}`]) {
-                        cellDiv.innerText = answers[`${r}-${c}`];
-                    }
                     
-                    // Highlight pada titik potong S (Baris 1 Kolom 1 dan Baris 3 Kolom 1)
-                    if ((r === 0 && c === 0) || (r === 2 && c === 0)) {
-                        cellDiv.classList.add('highlight');
+                    // Tambahkan Nomor Soal
+                    const num = numbers[`${r},${c}`];
+                    if (num) {
+                        const numSpan = document.createElement('span');
+                        numSpan.className = 'number';
+                        numSpan.innerText = num;
+                        cellDiv.appendChild(numSpan);
                     }
+
+                    // Tambahkan Huruf Kunci Jawaban
+                    const letter = answers[`${r},${c}`];
+                    if (letter) {
+                        cellDiv.innerText = letter;
+                        
+                        // Highlight khusus untuk huruf S yang berpotongan (STARS & WISDOM)
+                        if ((r === 0 && c === 0) || (r === 2 && c === 0)) {
+                            cellDiv.classList.add('highlight');
+                        }
+                    }
+
                 } else {
                     cellDiv.classList.add('black');
                 }
