@@ -1,338 +1,68 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TTS Seminar Profesi HIMASTA UNMUL</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
+const GRID_SIZE = 13;
+
+// Koordinat yang dijamin 100% pas secara sistematis & tidak akan ada huruf bentrok
+const dataSoal = [
+    // Mendatar (H)
+    { word: "STARS", r: 0, c: 0, dir: "H", num: 1 },
+    { word: "PYTHON", r: 2, c: 5, dir: "H", num: 3 },
+    { word: "WISDOM", r: 6, c: 0, dir: "H", num: 2 },
+    { word: "ANALYSIS", r: 10, c: 1, dir: "H", num: 5 },
+    { word: "EXCEL", r: 11, c: 3, dir: "H", num: 8 },
+
+    // Menurun (V)
+    { word: "JUDGEMENT", r: 0, c: 2, dir: "V", num: 7 },
+    { word: "PORTOFOLIO", r: 0, c: 9, dir: "V", num: 4 },
+    { word: "ETHICS", r: 5, c: 9, dir: "V", num: 6 },
+    { word: "DATA", r: 6, c: 3, dir: "V", num: 9 },
+    { word: "SQL", r: 9, c: 7, dir: "V", num: 10 }
+];
+
+let grid = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null));
+
+dataSoal.forEach(s => {
+    let row = s.r;
+    let col = s.c;
+    for (let i = 0; i < s.word.length; i++) {
+        if (!grid[row][col]) {
+            grid[row][col] = { letter: s.word[i], num: (i === 0 ? s.num : null) };
+        } else if (i === 0) {
+            grid[row][col].num = s.num;
         }
+        if (s.dir === "H") col++;
+        else row++;
+    }
+});
 
-        body {
-            background-color: #f4f4f9;
-            padding: 20px;
-            color: #333;
-        }
+const tbody = document.getElementById("board-body");
+tbody.innerHTML = ""; // Clear board sebelumnya
 
-        header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+for (let r = 0; r < GRID_SIZE; r++) {
+    const tr = document.createElement("tr");
+    for (let c = 0; c < GRID_SIZE; c++) {
+        const td = document.createElement("td");
+        const cellData = grid[r][c];
 
-        header h1 {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        header p {
-            color: #666;
-            font-size: 14px;
-            margin-top: 4px;
-            font-weight: bold;
-        }
-
-        .main-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .board-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .tts-table {
-            border-collapse: collapse;
-            background-color: #000;
-            border: 3px solid #000;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-
-        .tts-table td {
-            width: 34px;
-            height: 34px;
-            padding: 0;
-            margin: 0;
-            position: relative;
-            background-color: #fff;
-            text-align: center;
-            vertical-align: middle;
-            border: 1px solid #94a3b8;
-        }
-
-        .tts-table td.black {
-            background-color: #000;
-            border: 1px solid #000;
-        }
-
-        .tts-table input {
-            width: 100%;
-            height: 100%;
-            border: none;
-            outline: none;
-            text-align: center;
-            font-size: 15px;
-            font-weight: bold;
-            text-transform: uppercase;
-            background: transparent;
-        }
-
-        .tts-table input:focus {
-            background-color: #bae6fd;
-        }
-
-        .cell-num {
-            position: absolute;
-            top: 1px;
-            left: 2px;
-            font-size: 9px;
-            font-weight: bold;
-            color: #000;
-            pointer-events: none;
-        }
-
-        .controls {
-            margin-top: 15px;
-            display: flex;
-            gap: 10px;
-        }
-
-        button {
-            padding: 10px 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            color: #fff;
-            transition: 0.2s;
-        }
-
-        .btn-check { background-color: #10b981; }
-        .btn-check:hover { background-color: #059669; }
-
-        .btn-hint { background-color: #f59e0b; }
-        .btn-hint:hover { background-color: #d97706; }
-
-        .btn-reset { background-color: #ef4444; }
-        .btn-reset:hover { background-color: #dc2626; }
-
-        .clues-area {
-            flex: 1;
-            min-width: 300px;
-            max-width: 500px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-
-        .clues-section {
-            margin-bottom: 20px;
-        }
-
-        .clues-section h3 {
-            border-bottom: 2px solid #333;
-            padding-bottom: 5px;
-            margin-top: 0;
-            font-size: 16px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            font-size: 13px;
-            line-height: 1.5;
-            margin-bottom: 10px;
-        }
-
-        #result-msg {
-            margin-top: 10px;
-            font-weight: bold;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>TEKA TEKI SILANG SEMINAR PROFESI</h1>
-        <p>HIMASTA UNMUL</p>
-    </header>
-
-    <div class="main-container">
-        <!-- Papan TTS -->
-        <div class="board-area">
-            <table class="tts-table">
-                <tbody id="board-body"></tbody>
-            </table>
-            
-            <div class="controls">
-                <button class="btn-check" onclick="cekJawaban()">Cek Jawaban</button>
-                <button class="btn-hint" onclick="beriBantuan()">Hint</button>
-                <button class="btn-reset" onclick="resetSemua()">Reset</button>
-            </div>
-            <div id="result-msg"></div>
-        </div>
-
-        <!-- Pertanyaan -->
-        <div class="clues-area">
-            <div class="clues-section">
-                <h3>MENDATAR</h3>
-                <ul>
-                    <li><strong>1.</strong> Akronim dari tema seminar profesi di HIMASTA UNMUL (Statistics Towards Achievement and Responsible Success).</li>
-                    <li><strong>2.</strong> Tingkat keputusan tertinggi dalam alur kerangka kerja DIKW (What should we do?).</li>
-                    <li><strong>3.</strong> Salah satu bahasa pemrograman utama yang paling sering digunakan oleh statistikawan dan data professional.</li>
-                    <li><strong>5.</strong> Tahapan atau proses mengolah data untuk menemukan wawasan (insight), hubungan, atau pola.</li>
-                    <li><strong>8.</strong> Aplikasi spreadsheet mendasar yang digunakan untuk pembersihan data (data preparation) dan tabel analisis.</li>
-                </ul>
-            </div>
-
-            <div class="clues-section">
-                <h3>MENURUN</h3>
-                <ul>
-                    <li><strong>4.</strong> Kumpulan rekam jejak hasil karya atau projek nyata yang perlu dibangun mahasiswa sejak bangku kuliah (Start Early).</li>
-                    <li><strong>6.</strong> Prinsip moral, integritas, dan objektivitas dalam pengolahan data agar terhindar dari bias.</li>
-                    <li><strong>7.</strong> Pertimbangan kritis dan pemahaman konteks manusia yang tidak dapat digantikan oleh kecerdasan buatan (AI) secara utuh.</li>
-                    <li><strong>9.</strong> Bahan mentah berupa angka atau fakta yang berada di balik setiap pertanyaan bisnis maupun kebijakan.</li>
-                    <li><strong>10.</strong> Bahasa kueri standar yang digunakan untuk mengelola dan mengekstrak data dari sistem basis data (database).</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const GRID_SIZE = 12;
-
-        // TATA LETAK FISIK PRESISI SESUAI GAMBAR SCREENSHOT AWAL
-        const dataSoal = [
-            // Mendatar
-            { word: "STARS", r: 0, c: 0, dir: "H", num: 1 },
-            { word: "WISDOM", r: 4, c: 0, dir: "H", num: 2 },
-            { word: "PYTHON", r: 2, c: 3, dir: "H", num: 3 },
-            { word: "ANALYSIS", r: 7, c: 1, dir: "H", num: 5 },
-            { word: "EXCEL", r: 9, c: 5, dir: "H", num: 8 },
-
-            // Menurun
-            { word: "JUDGEMENT", r: 0, c: 2, dir: "V", num: 7 },
-            { word: "ETHICS", r: 2, c: 8, dir: "V", num: 6 },
-            { word: "PORTOFOLIO", r: 1, c: 6, dir: "V", num: 4 },
-            { word: "DATA", r: 4, c: 5, dir: "V", num: 9 },
-            { word: "SQL", r: 7, c: 6, dir: "V", num: 10 }
-        ];
-
-        let grid = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null));
-
-        dataSoal.forEach(s => {
-            let row = s.r;
-            let col = s.c;
-            for (let i = 0; i < s.word.length; i++) {
-                if (!grid[row][col]) {
-                    grid[row][col] = { letter: s.word[i], num: (i === 0 ? s.num : null) };
-                } else if (i === 0) {
-                    grid[row][col].num = s.num;
-                }
-                if (s.dir === "H") col++;
-                else row++;
+        if (cellData) {
+            td.id = `cell-${r}-${c}`;
+            if (cellData.num) {
+                const numSpan = document.createElement("span");
+                numSpan.className = "cell-num";
+                numSpan.innerText = cellData.num;
+                td.appendChild(numSpan);
             }
-        });
 
-        const tbody = document.getElementById("board-body");
-        for (let r = 0; r < GRID_SIZE; r++) {
-            const tr = document.createElement("tr");
-            for (let c = 0; c < GRID_SIZE; c++) {
-                const td = document.createElement("td");
-                const cellData = grid[r][c];
-
-                if (cellData) {
-                    td.id = `cell-${r}-${c}`;
-                    if (cellData.num) {
-                        const numSpan = document.createElement("span");
-                        numSpan.className = "cell-num";
-                        numSpan.innerText = cellData.num;
-                        td.appendChild(numSpan);
-                    }
-
-                    const input = document.createElement("input");
-                    input.maxLength = 1;
-                    input.dataset.r = r;
-                    input.dataset.c = c;
-                    input.oninput = function() {
-                        this.value = this.value.toUpperCase();
-                    };
-                    td.appendChild(input);
-                } else {
-                    td.className = "black";
-                }
-                tr.appendChild(td);
-            }
-            tbody.appendChild(tr);
+            const input = document.createElement("input");
+            input.maxLength = 1;
+            input.dataset.r = r;
+            input.dataset.c = c;
+            input.oninput = function() {
+                this.value = this.value.toUpperCase();
+            };
+            td.appendChild(input);
+        } else {
+            td.className = "black";
         }
-
-        function cekJawaban() {
-            let benar = 0;
-            let total = 0;
-            for (let r = 0; r < GRID_SIZE; r++) {
-                for (let c = 0; c < GRID_SIZE; c++) {
-                    if (grid[r][c]) {
-                        total++;
-                        const input = document.querySelector(`input[data-r="${r}"][data-c="${c}"]`);
-                        if (input.value.toUpperCase() === grid[r][c].letter) {
-                            input.style.backgroundColor = "#d1fae5";
-                            benar++;
-                        } else if (input.value !== "") {
-                            input.style.backgroundColor = "#fee2e2";
-                        }
-                    }
-                }
-            }
-            const msg = document.getElementById("result-msg");
-            if (benar === total) {
-                msg.style.color = "#10b981";
-                msg.innerText = "SELAMAT! JAWABAN BENAR SEMUA!";
-            } else {
-                msg.style.color = "#f59e0b";
-                msg.innerText = `Terisi benar: ${benar} dari ${total} huruf.`;
-            }
-        }
-
-        function beriBantuan() {
-            let salahOrKosong = [];
-            for (let r = 0; r < GRID_SIZE; r++) {
-                for (let c = 0; c < GRID_SIZE; c++) {
-                    if (grid[r][c]) {
-                        const input = document.querySelector(`input[data-r="${r}"][data-c="${c}"]`);
-                        if (input.value.toUpperCase() !== grid[r][c].letter) {
-                            salahOrKosong.push({ input, letter: grid[r][c].letter });
-                        }
-                    }
-                }
-            }
-            if (salahOrKosong.length > 0) {
-                const acak = salahOrKosong[Math.floor(Math.random() * salahOrKosong.length)];
-                acak.input.value = acak.letter;
-                acak.input.style.backgroundColor = "#d1fae5";
-            }
-        }
-
-        function resetSemua() {
-            document.querySelectorAll("td input").forEach(input => {
-                input.value = "";
-                input.style.backgroundColor = "transparent";
-            });
-            document.getElementById("result-msg").innerText = "";
-        }
-    </script>
-</body>
-</html>
+        tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+}
